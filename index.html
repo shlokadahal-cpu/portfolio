@@ -144,180 +144,187 @@ a{text-decoration:none;color:inherit;}
 /* ══ EXPANDED TILT (all gc cards) ══ */
 .gc{transform-style:preserve-3d;will-change:transform;}
 
-/* ══ LOADER — CINEMATIC PROFESSIONAL ══ */
+/* ══════════════════════════════════════════
+   LOADER  —  clean · minimal · premium
+   ══════════════════════════════════════════ */
 #loader{
   position:fixed;inset:0;z-index:99999;
   background:#06060f;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  display:flex;align-items:center;justify-content:center;
   overflow:hidden;
-  transition:opacity .9s cubic-bezier(.4,0,.2,1),visibility .9s;
 }
-#loader.out{opacity:0;visibility:hidden;pointer-events:none;}
-
-/* Dark starfield */
-.ld-grid{
-  position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(201,168,76,.035) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(201,168,76,.035) 1px,transparent 1px);
-  background-size:50px 50px;
-  animation:gridMove 10s linear infinite;
+#loader.out{
+  animation:loaderExit .9s cubic-bezier(.76,0,.24,1) forwards;
+  pointer-events:none;
 }
-@keyframes gridMove{to{background-position:50px 50px;}}
-
-/* Top & bottom cinematic bars */
-.ld-bar-top,.ld-bar-bot{
-  position:absolute;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,transparent,var(--gold),var(--gold2),transparent);
-  box-shadow:0 0 18px rgba(201,168,76,.7);
-}
-.ld-bar-top{top:0;animation:barGlow 2s ease-in-out infinite alternate;}
-.ld-bar-bot{bottom:0;animation:barGlow 2s ease-in-out .5s infinite alternate;}
-@keyframes barGlow{from{opacity:.5;}to{opacity:1;}}
-
-/* Scanning line */
-.ld-scan{
-  position:absolute;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,rgba(201,168,76,.5),var(--gold2),rgba(201,168,76,.5),transparent);
-  box-shadow:0 0 16px rgba(201,168,76,.6);
-  animation:scanLine 3s ease-in-out infinite;
-  opacity:.6;
-}
-@keyframes scanLine{
-  0%{top:-2px;opacity:0;}
-  10%{opacity:.6;}
-  90%{opacity:.6;}
-  100%{top:100%;opacity:0;}
+@keyframes loaderExit{
+  0%{clip-path:inset(0 0 0 0);opacity:1;}
+  100%{clip-path:inset(0 0 100% 0);opacity:0;}
 }
 
-/* Corner decorations */
-.ld-corner{position:absolute;width:50px;height:50px;}
-.ld-corner::before,.ld-corner::after{content:'';position:absolute;background:var(--gold);}
-.ld-corner::before{width:100%;height:2px;}
-.ld-corner::after{width:2px;height:100%;}
-.ld-c1{top:24px;left:24px;}
-.ld-c2{top:24px;right:24px;transform:scaleX(-1);}
-.ld-c3{bottom:24px;left:24px;transform:scaleY(-1);}
-.ld-c4{bottom:24px;right:24px;transform:scale(-1);}
-.ld-corner{opacity:0;animation:cornerFade .7s ease forwards;}
-.ld-c1{animation-delay:.1s;}
-.ld-c2{animation-delay:.2s;}
-.ld-c3{animation-delay:.3s;}
-.ld-c4{animation-delay:.4s;}
-@keyframes cornerFade{to{opacity:1;}}
+/* ── Subtle vignette */
+#loader::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 40%,rgba(0,0,0,.7) 100%);
+  pointer-events:none;z-index:0;
+}
 
-/* Center content */
-.ld-center{
+/* ── Ambient gold orb behind text */
+.ldr-orb{
+  position:absolute;
+  width:420px;height:420px;
+  background:radial-gradient(circle,rgba(201,168,76,.09) 0%,transparent 70%);
+  border-radius:50%;
+  animation:orbBreath 4s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes orbBreath{
+  0%,100%{transform:scale(.85);opacity:.6;}
+  50%{transform:scale(1.1);opacity:1;}
+}
+
+/* ── Center stage */
+.ldr-stage{
   position:relative;z-index:2;
-  display:flex;flex-direction:column;align-items:center;gap:1.6rem;
+  display:flex;flex-direction:column;align-items:center;
+  gap:0;
 }
 
-/* Circular progress ring */
-.ld-circle-wrap{position:relative;width:180px;height:180px;}
-.ld-svg{width:180px;height:180px;transform:rotate(-90deg);}
-.ld-track{fill:none;stroke:rgba(201,168,76,.08);stroke-width:2.5;}
-.ld-arc{
-  fill:none;stroke:url(#ldGrad);stroke-width:2.5;stroke-linecap:round;
-  stroke-dasharray:502;stroke-dashoffset:502;
-  transition:stroke-dashoffset .05s linear;
-  filter:drop-shadow(0 0 8px rgba(201,168,76,.9));
-}
-.ld-arc2{fill:none;stroke:rgba(201,168,76,.1);stroke-width:.8;stroke-dasharray:6 5;stroke-linecap:round;}
-
-/* Center avatar/initials */
-.ld-pct-wrap{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:0;
-}
-/* SD monogram in center */
-.ld-monogram{
+/* ── Monogram SD */
+.ldr-mono{
   font-family:'Orbitron',sans-serif;
-  font-size:2.2rem;font-weight:900;
-  background:linear-gradient(135deg,var(--gold),var(--gold2),var(--gold3));
+  font-size:clamp(4.5rem,12vw,7.5rem);
+  font-weight:900;
+  letter-spacing:.04em;
+  line-height:1;
+  background:linear-gradient(160deg,#f5e0a0 0%,#e8c97a 35%,#c9a84c 65%,#a07830 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  letter-spacing:.15em;line-height:1;
-  filter:drop-shadow(0 0 16px rgba(201,168,76,.6));
-  opacity:0;animation:monogramIn 1s .5s ease forwards;
+  position:relative;
+  opacity:0;
+  animation:monoReveal 1s .1s cubic-bezier(.16,1,.3,1) forwards;
 }
-@keyframes monogramIn{from{opacity:0;transform:scale(.7);}to{opacity:1;transform:scale(1);}}
-.ld-pct{
-  font-family:'Orbitron',sans-serif;
-  font-size:1.2rem;font-weight:700;
-  color:rgba(201,168,76,.7);
-  line-height:1;margin-top:2px;
-  transition:all .05s;
-}
-
-/* Name below ring */
-.ld-name{
-  font-family:'Orbitron',sans-serif;
-  font-size:1.4rem;font-weight:900;
-  background:linear-gradient(135deg,var(--gold),var(--gold2),var(--gold3));
+/* Subtle reflection line through the letters */
+.ldr-mono::after{
+  content:'SD';
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    transparent 0%,
+    transparent 48%,
+    rgba(255,255,255,.08) 50%,
+    transparent 52%,
+    transparent 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  letter-spacing:.35em;
-  animation:logoPulse 1.3s ease-in-out infinite alternate;
-  opacity:0;animation:nameIn .8s .3s ease forwards, logoPulse 2s 1.3s ease-in-out infinite alternate;
+  pointer-events:none;
 }
-@keyframes nameIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-@keyframes logoPulse{
-  from{filter:drop-shadow(0 0 6px rgba(201,168,76,.3));}
-  to{filter:drop-shadow(0 0 28px rgba(201,168,76,.85));}
+@keyframes monoReveal{
+  0%{opacity:0;transform:translateY(28px) scale(.92);}
+  100%{opacity:1;transform:translateY(0) scale(1);}
 }
 
-/* Status phase text */
-.ld-phase{
-  color:var(--gold2);font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;
-  opacity:.7;min-height:1.2em;text-align:center;
-  animation:phaseFade .4s ease;
+/* ── Thin gold divider */
+.ldr-divider{
+  width:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:1.1rem 0 1rem;
+  opacity:0;
+  animation:dividerExpand .7s .7s ease forwards;
 }
-@keyframes phaseFade{from{opacity:0;transform:translateY(4px);}to{opacity:.7;transform:translateY(0);}}
+@keyframes dividerExpand{
+  0%{width:0;opacity:0;}
+  100%{width:200px;opacity:.55;}
+}
 
-/* Bottom bar */
-.ld-bar-wrap{width:280px;max-width:80vw;}
-.ld-bar-row{display:flex;justify-content:space-between;margin-bottom:.35rem;}
-.ld-bar-label{color:var(--text2);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;}
-.ld-bar-pct-text{color:var(--gold);font-size:.6rem;font-family:'Orbitron',sans-serif;letter-spacing:.1em;}
-.ld-bar{width:100%;height:2px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden;position:relative;}
-.ld-fill{
+/* ── Full name */
+.ldr-name{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(.65rem,.9vw,.82rem);
+  letter-spacing:.55em;
+  text-transform:uppercase;
+  color:rgba(201,168,76,.65);
+  font-weight:400;
+  opacity:0;
+  animation:nameSlide .7s .85s ease forwards;
+}
+@keyframes nameSlide{
+  0%{opacity:0;letter-spacing:.8em;}
+  100%{opacity:1;letter-spacing:.55em;}
+}
+
+/* ── Role tag */
+.ldr-role{
+  font-size:clamp(.55rem,.75vw,.68rem);
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  color:rgba(160,152,136,.45);
+  font-weight:400;
+  margin-top:.55rem;
+  opacity:0;
+  animation:fadeUp .6s 1.1s ease forwards;
+}
+@keyframes fadeUp{
+  0%{opacity:0;transform:translateY(6px);}
+  100%{opacity:1;transform:translateY(0);}
+}
+
+/* ── Progress track (bottom) */
+.ldr-progress-wrap{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:2px;
+  background:rgba(255,255,255,.04);
+  overflow:hidden;
+}
+.ldr-progress-fill{
   height:100%;width:0%;
-  background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold3));
-  border-radius:2px;
-  box-shadow:0 0 10px rgba(201,168,76,.7);
-  transition:width .05s linear;
+  background:linear-gradient(90deg,
+    transparent 0%,
+    var(--gold) 30%,
+    var(--gold2) 70%,
+    var(--gold3) 100%);
+  transition:width .08s linear;
   position:relative;
 }
-.ld-fill::after{
+/* Bright leading dot */
+.ldr-progress-fill::after{
   content:'';
-  position:absolute;right:0;top:-2px;bottom:-2px;width:6px;
-  background:rgba(255,255,255,.7);
-  border-radius:50%;filter:blur(2px);
+  position:absolute;right:-1px;top:-3px;
+  width:4px;height:8px;
+  background:rgba(245,224,160,.9);
+  border-radius:2px;
+  filter:blur(1.5px);
+  box-shadow:0 0 12px rgba(245,224,160,.8),0 0 24px rgba(201,168,76,.5);
 }
 
-/* Particles */
-.ld-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
-.ld-p{
-  position:absolute;border-radius:50%;
-  background:var(--gold);
-  animation:ldParticle var(--dur,4s) var(--del,0s) ease-out infinite;
+/* ── Percentage — subtle, bottom-right */
+.ldr-pct-badge{
+  position:absolute;
+  bottom:14px;right:20px;
+  font-family:'Orbitron',sans-serif;
+  font-size:.6rem;font-weight:700;
+  color:rgba(201,168,76,.45);
+  letter-spacing:.12em;
   opacity:0;
-}
-@keyframes ldParticle{
-  0%{opacity:0;transform:translate(0,0) scale(0);}
-  10%{opacity:.7;}
-  100%{opacity:0;transform:translate(var(--tx,0),var(--ty,0)) scale(.2);}
+  animation:fadeUp .5s 1s ease forwards;
 }
 
-/* Horizontal accent lines */
-.ld-hlines{position:absolute;inset:0;pointer-events:none;}
-.ld-hline{
-  position:absolute;left:50%;transform:translateX(-50%);
-  height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);
-  opacity:.15;
-  animation:hlinePulse 2.5s ease-in-out infinite;
+/* ── Corner brackets — minimal */
+.ldr-corner{
+  position:absolute;
+  width:32px;height:32px;
+  opacity:0;
+  animation:cFade .6s ease forwards;
 }
-.ld-hline:nth-child(1){width:240px;top:32%;animation-delay:0s;}
-.ld-hline:nth-child(2){width:160px;bottom:32%;animation-delay:.8s;}
-@keyframes hlinePulse{0%,100%{opacity:.08;width:60px;}50%{opacity:.22;width:240px;}}
+.ldr-corner::before,.ldr-corner::after{
+  content:'';position:absolute;
+  background:rgba(201,168,76,.35);
+}
+.ldr-corner::before{width:100%;height:1px;top:0;left:0;}
+.ldr-corner::after{width:1px;height:100%;top:0;left:0;}
+.ldr-c-tl{top:22px;left:22px;animation-delay:.3s;}
+.ldr-c-tr{top:22px;right:22px;transform:scaleX(-1);animation-delay:.4s;}
+.ldr-c-bl{bottom:22px;left:22px;transform:scaleY(-1);animation-delay:.5s;}
+.ldr-c-br{bottom:22px;right:22px;transform:scale(-1);animation-delay:.6s;}
+@keyframes cFade{to{opacity:1;}}
 
 @keyframes spin{to{transform:rotate(360deg);}}
 
@@ -723,10 +730,6 @@ footer strong{color:var(--gold);}
   .info-list li{flex-direction:column;gap:.15rem;}
   .info-list .ik{font-size:.68rem;}
   .info-list .iv{font-size:.82rem;}
-  .ld-circle-wrap{width:140px;height:140px;}
-  .ld-svg{width:140px;height:140px;}
-  .ld-pct{font-size:2rem;}
-  .ld-bar-wrap{width:260px;}
   footer{padding:1.5rem 1rem;}
   #avail-badge{font-size:.7rem;padding:.35rem .8rem;}
   .tc-cloud{gap:.4rem;}
@@ -735,9 +738,6 @@ footer strong{color:var(--gold);}
 @media(max-width:380px){
   .h-name{font-size:1.5rem;}
   .nav-logo{font-size:1.2rem;}
-  .ld-circle-wrap{width:120px;height:120px;}
-  .ld-svg{width:120px;height:120px;}
-  .ld-pct{font-size:1.7rem;}
 }
 
 /* ── SECTION INDICATOR */
@@ -1006,56 +1006,29 @@ nav.scrolled {
 <body>
 
 <div id="loader">
-  <!-- Background elements -->
-  <div class="ld-grid"></div>
-  <div class="ld-scan"></div>
-  <div class="ld-bar-top"></div>
-  <div class="ld-bar-bot"></div>
-  <div class="ld-corner ld-c1"></div>
-  <div class="ld-corner ld-c2"></div>
-  <div class="ld-corner ld-c3"></div>
-  <div class="ld-corner ld-c4"></div>
-  <div class="ld-hlines"><div class="ld-hline"></div><div class="ld-hline"></div></div>
+  <!-- Ambient glow -->
+  <div class="ldr-orb"></div>
 
-  <!-- Floating particles -->
-  <div class="ld-particles" id="ldParticles"></div>
+  <!-- Corner brackets -->
+  <div class="ldr-corner ldr-c-tl"></div>
+  <div class="ldr-corner ldr-c-tr"></div>
+  <div class="ldr-corner ldr-c-bl"></div>
+  <div class="ldr-corner ldr-c-br"></div>
 
-  <!-- Center group -->
-  <div class="ld-center">
-    <!-- SVG circular progress with monogram -->
-    <div class="ld-circle-wrap">
-      <svg class="ld-svg" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="ldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#c9a84c"/>
-            <stop offset="50%" stop-color="#e8c97a"/>
-            <stop offset="100%" stop-color="#f5e0a0"/>
-          </linearGradient>
-        </defs>
-        <circle class="ld-arc2" cx="90" cy="90" r="80"/>
-        <circle class="ld-track" cx="90" cy="90" r="80"/>
-        <circle class="ld-arc" id="ldArc" cx="90" cy="90" r="80"/>
-      </svg>
-      <div class="ld-pct-wrap">
-        <span class="ld-monogram">SD</span>
-        <span class="ld-pct" id="ldPct">0%</span>
-      </div>
-    </div>
+  <!-- Center stage -->
+  <div class="ldr-stage">
+    <span class="ldr-mono">SD</span>
+    <div class="ldr-divider"></div>
+    <span class="ldr-name">Shloka Dahal</span>
+    <span class="ldr-role">Computer Engineering · Nepal</span>
+  </div>
 
-    <!-- Name -->
-    <div class="ld-name">SHLOKA DAHAL</div>
+  <!-- Percentage badge -->
+  <span class="ldr-pct-badge" id="ldPct">0%</span>
 
-    <!-- Phase text -->
-    <div class="ld-phase" id="ld-phase">Initializing systems...</div>
-
-    <!-- Bottom linear bar -->
-    <div class="ld-bar-wrap">
-      <div class="ld-bar-row">
-        <span class="ld-bar-label">Loading Portfolio</span>
-        <span class="ld-bar-pct-text" id="ldBarPct">0%</span>
-      </div>
-      <div class="ld-bar"><div class="ld-fill" id="ldFill"></div></div>
-    </div>
+  <!-- Full-width progress bar at bottom -->
+  <div class="ldr-progress-wrap">
+    <div class="ldr-progress-fill" id="ldFill"></div>
   </div>
 </div>
 
@@ -1414,122 +1387,65 @@ nav.scrolled {
 
 <script>
 // ══════════════════════════════════════
-// ── CINEMATIC PERCENTAGE LOADER
+// ── LOADER  (clean minimal version)
 // ══════════════════════════════════════
 (function() {
-  var CIRCUMFERENCE = 2 * Math.PI * 80; // r=80 → ~502.65
-  var arc = document.getElementById('ldArc');
-  var pctEl = document.getElementById('ldPct');
-  var fillEl = document.getElementById('ldFill');
-  var barPctEl = document.getElementById('ldBarPct');
-  var phaseEl = document.getElementById('ld-phase');
-  var particlesEl = document.getElementById('ldParticles');
+  var fillEl   = document.getElementById('ldFill');
+  var pctEl    = document.getElementById('ldPct');
+  var loader   = document.getElementById('loader');
 
-  arc.style.strokeDasharray = CIRCUMFERENCE;
-  arc.style.strokeDashoffset = CIRCUMFERENCE;
+  var current  = 0;
+  var target   = 0;
+  var done     = false;
+  var raf;
 
-  // Phases with their target percentages
-  var phases = [
-    { pct: 0,   text: 'Initializing systems...' },
-    { pct: 18,  text: 'Loading assets...' },
-    { pct: 35,  text: 'Building particles...' },
-    { pct: 52,  text: 'Rendering UI components...' },
-    { pct: 70,  text: 'Calibrating animations...' },
-    { pct: 85,  text: 'Preparing portfolio...' },
-    { pct: 95,  text: 'Almost ready...' },
-    { pct: 100, text: 'Welcome! ✦' }
+  // Milestones: [delay_ms, target_%]
+  var milestones = [
+    [0,    8],
+    [400,  25],
+    [900,  48],
+    [1500, 66],
+    [2100, 80],
+    [2700, 91],
+    [3300, 97],
+    [3800, 100]
   ];
 
-  // Spawn floating particles
-  for (var i = 0; i < 18; i++) {
-    var p = document.createElement('div');
-    p.className = 'ld-p';
-    var size = Math.random() * 3 + 1;
-    var tx = (Math.random() - 0.5) * 400;
-    var ty = (Math.random() - 0.5) * 400;
-    p.style.cssText = [
-      'width:' + size + 'px', 'height:' + size + 'px',
-      'left:' + (30 + Math.random() * 40) + '%',
-      'top:' + (30 + Math.random() * 40) + '%',
-      '--tx:' + tx + 'px', '--ty:' + ty + 'px',
-      '--dur:' + (3 + Math.random() * 3) + 's',
-      '--del:' + (Math.random() * 2) + 's',
-      'opacity:0'
-    ].join(';');
-    particlesEl.appendChild(p);
-  }
-
-  var currentPct = 0;
-  var targetPct = 0;
-  var phaseIdx = 0;
-  var finished = false;
-
-  function setPhase(idx) {
-    if (idx >= phases.length) return;
-    phaseIdx = idx;
-    targetPct = phases[idx].pct;
-    if (phaseEl) {
-      phaseEl.style.animation = 'none';
-      void phaseEl.offsetWidth;
-      phaseEl.style.animation = 'phaseFade .4s ease';
-      phaseEl.textContent = phases[idx].text;
-    }
-  }
-
-  function updateVisuals(pct) {
-    // Circular arc
-    var offset = CIRCUMFERENCE - (pct / 100) * CIRCUMFERENCE;
-    arc.style.strokeDashoffset = offset;
-    // Number
-    if (pctEl) pctEl.textContent = Math.floor(pct) + '%';
-    // Linear bar
-    if (fillEl) fillEl.style.width = pct + '%';
-    if (barPctEl) barPctEl.textContent = Math.floor(pct) + '%';
-  }
-
-  // Smooth animation
-  var animId;
-  function animate() {
-    if (currentPct < targetPct) {
-      var speed = Math.max(0.12, (targetPct - currentPct) * 0.04);
-      currentPct = Math.min(targetPct, currentPct + speed);
-      updateVisuals(currentPct);
-
-      // Update phase if a threshold is crossed
-      for (var i = phaseIdx + 1; i < phases.length; i++) {
-        if (currentPct >= phases[i].pct - 0.5 && targetPct >= phases[i].pct) {
-          setPhase(i);
-          break;
-        }
-      }
-    }
-    if (!finished) animId = requestAnimationFrame(animate);
-  }
-
-  // Schedule phase advances
-  var delays = [0, 600, 1200, 1900, 2600, 3200, 3700, 4100];
-  delays.forEach(function(d, i) {
-    setTimeout(function() { setPhase(i); }, d);
+  milestones.forEach(function(m) {
+    setTimeout(function() { target = m[1]; }, m[0]);
   });
 
-  // Dismiss at 100%
-  setTimeout(function() {
-    finished = true;
-    cancelAnimationFrame(animId);
-    updateVisuals(100);
+  function tick() {
+    if (current < target) {
+      var step = Math.max(0.15, (target - current) * 0.045);
+      current = Math.min(target, current + step);
+      var pct = Math.floor(current);
+      if (fillEl) fillEl.style.width = current + '%';
+      if (pctEl)  pctEl.textContent  = pct + '%';
+    }
+    if (!done) raf = requestAnimationFrame(tick);
+  }
+  raf = requestAnimationFrame(tick);
+
+  // Dismiss
+  function dismiss() {
+    if (done) return;
+    done = true;
+    cancelAnimationFrame(raf);
+    if (fillEl) fillEl.style.width = '100%';
+    if (pctEl)  pctEl.textContent  = '100%';
     setTimeout(function() {
-      document.getElementById('loader').classList.add('out');
-    }, 600);
-  }, 4800);
+      loader.classList.add('out');
+      // Full cleanup after animation
+      setTimeout(function() {
+        loader.style.display = 'none';
+      }, 1000);
+    }, 380);
+  }
 
-  setPhase(0);
-  animate();
-
-  // Also hide after page load (safety net)
+  setTimeout(dismiss, 4000);
   window.addEventListener('load', function() {
-    setTimeout(function() {
-      document.getElementById('loader').classList.add('out');
-    }, 5200);
+    setTimeout(dismiss, 500);
   });
 })();
 
