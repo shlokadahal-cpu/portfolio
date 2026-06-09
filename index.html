@@ -4,6 +4,35 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Shloka Dahal | Portfolio</title>
+
+<!-- ══ SEO ══ -->
+<meta name="description" content="Shloka Dahal — Computer Engineering student at Himalaya College of Engineering, Tribhuvan University. Passionate C & C++ developer from Nepal building the future one line of code at a time."/>
+<meta name="keywords" content="Shloka Dahal, portfolio, computer engineering, Nepal, C programming, C++, HTML, CSS, JavaScript, developer"/>
+<meta name="author" content="Shloka Dahal"/>
+<link rel="canonical" href="https://shlokadahal.netlify.app/"/>
+
+<!-- ══ OPEN GRAPH (Facebook, Messenger, Instagram, WhatsApp, Discord) ══ -->
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://shlokadahal.netlify.app/"/>
+<meta property="og:title" content="Shloka Dahal | Computer Engineering Portfolio"/>
+<meta property="og:description" content="Passionate Computer Engineering student from Nepal — C, C++, HTML/CSS/JS developer. Breaking barriers and building the future, one line of code at a time."/>
+<meta property="og:image" content="https://shlokadahal.netlify.app/og-preview.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="Shloka Dahal Portfolio Preview"/>
+<meta property="og:site_name" content="Shloka Dahal Portfolio"/>
+<meta property="og:locale" content="en_US"/>
+
+<!-- ══ TWITTER / X CARD ══ -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:url" content="https://shlokadahal.netlify.app/"/>
+<meta name="twitter:title" content="Shloka Dahal | Computer Engineering Portfolio"/>
+<meta name="twitter:description" content="Passionate Computer Engineering student from Nepal — C, C++, HTML/CSS/JS developer. Breaking barriers and building the future, one line of code at a time."/>
+<meta name="twitter:image" content="https://shlokadahal.netlify.app/og-preview.jpg"/>
+<meta name="twitter:image:alt" content="Shloka Dahal Portfolio Preview"/>
+
+<!-- ══ THEME COLOR (browser chrome) ══ -->
+<meta name="theme-color" content="#c9a84c"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;600;700;900&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <style>
@@ -491,10 +520,43 @@ footer strong{color:var(--gold);}
   .tl{padding-left:54px;}
   .tl-dot{left:-40px;width:40px;height:40px;font-size:.82rem;}
   #cpick{bottom:5.5rem;} #btt{bottom:2rem;}
+  .ctr-grid{grid-template-columns:repeat(2,1fr);}
+  .hero-stats{flex-wrap:wrap;gap:1rem;justify-content:center;}
+  footer{padding:2rem 1.2rem;}
+  .form-card{padding:1.2rem;}
 }
 @media(max-width:520px){
-  .h-name{font-size:2rem;}
+  .h-name{font-size:clamp(1.6rem,8vw,2.2rem);}
   .pj-grid,.gh-grid,.rm-grid,.cert-grid{grid-template-columns:1fr;}
+  .ctr-grid{grid-template-columns:repeat(2,1fr);}
+  .nav-logo{font-size:1.15rem;}
+  .s-title{font-size:clamp(1.3rem,6vw,2rem);}
+  .h-bio{font-size:.83rem;}
+  .hero-btns{flex-direction:column;align-items:center;gap:.7rem;}
+  .hero-btns .btn{width:100%;max-width:240px;justify-content:center;}
+  .hero-stats{gap:.7rem;}
+  .hst-sep{display:none;}
+  .sk-name{font-size:.78rem;}
+  .tl{padding-left:44px;}
+  .tl-dot{left:-34px;width:32px;height:32px;font-size:.72rem;}
+  .ct-ico{width:34px;height:34px;font-size:.8rem;}
+  .ct-item a,.ct-item span{font-size:.8rem;}
+  .rm-card{padding:1.1rem;}
+  .cert-grid{grid-template-columns:repeat(2,1fr);}
+  .cert-wrap{height:148px;}
+  .photo-frame{width:190px;height:236px;}
+  .s{padding:4rem 1rem;}
+  #hero{padding:6rem 1rem 5rem;}
+  #avail-badge{bottom:5.5rem;left:1rem;}
+  #cpick{bottom:5.5rem;left:1rem;}
+  #btt{bottom:1.2rem;right:1.2rem;}
+}
+@media(max-width:380px){
+  .h-name{font-size:1.5rem;}
+  .cert-grid{grid-template-columns:1fr;}
+  .ctr-grid{grid-template-columns:1fr;}
+  .hero-btns .btn{max-width:200px;}
+  .photo-frame{width:160px;height:200px;}
 }
 
 /* ── SECTION INDICATOR */
