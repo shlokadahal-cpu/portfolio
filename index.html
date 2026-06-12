@@ -163,7 +163,7 @@ a{text-decoration:none;color:inherit;}
 @keyframes ldFill{to{width:100%;}}
 .ld-txt{color:var(--text2);font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;}
 .ld-sub{color:var(--gold);font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;opacity:.6;margin-top:-.8rem;}
-.ld-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold3));width:0;animation:ldFill 4.2s cubic-bezier(.4,0,.2,1) forwards;}
+.ld-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold3));width:0;animation:ldFill 6s cubic-bezier(.4,0,.2,1) forwards;}
 
 /* PROGRESS */
 #prog{position:fixed;top:0;left:0;height:2px;z-index:10001;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0;box-shadow:0 0 8px rgba(201,168,76,.6);transition:width .1s;}
@@ -221,6 +221,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .nav-r{display:flex;align-items:center;gap:.7rem;flex-shrink:0;}
 .nav-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--gb2);background:var(--glass);color:var(--gold);font-size:.9rem;cursor:none;display:flex;align-items:center;justify-content:center;transition:all .3s;}
 .nav-btn:hover{border-color:var(--gold);box-shadow:0 0 18px rgba(201,168,76,.35);transform:scale(1.1);}
+.dev-btn{width:auto;border-radius:18px;padding:0 .8rem;font-family:'Orbitron',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;}
 .dl-cv{padding:.5rem 1.1rem;border-radius:20px;border:none;background:linear-gradient(135deg,var(--gold),#9a6820);color:#06060f;font-family:'Space Grotesk',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:none;transition:all .3s;box-shadow:0 4px 20px rgba(201,168,76,.3);}
 .dl-cv:hover{box-shadow:0 6px 30px rgba(201,168,76,.6);transform:translateY(-2px);}
 .hbg{display:none;flex-direction:column;gap:5px;cursor:none;padding:6px;}
@@ -286,6 +287,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
   .hbg.open{position:fixed;top:1.1rem;right:1.2rem;z-index:10002;}
   .dl-cv{display:none;}
   .nav-btn#thmbtn{display:none;}
+  .nav-btn#devbtn{display:flex;}
 }
 @media(min-width:901px) and (max-width:1100px){
   nav{padding:.9rem 1.5rem;}
@@ -635,6 +637,104 @@ body::after{content:'';position:fixed;inset:0;z-index:99998;pointer-events:none;
 
 @media(max-width:768px){.ctr-grid{grid-template-columns:repeat(2,1fr);}.hero-stats{flex-wrap:wrap;justify-content:center;gap:1rem;}.hst-sep{display:none;}}
 
+/* ══ DEV MODE ══ */
+#devmode{position:fixed;inset:0;z-index:20000;background:#0a0a14;display:none;flex-direction:column;cursor:auto;font-family:'Space Grotesk',sans-serif;}
+#devmode *{cursor:auto !important;}
+#devmode.open{display:flex;}
+:root{--dm-acc:#a78bfa;--dm-acc2:#c4b5fd;--dm-bg:#0a0a14;--dm-panel:#11111f;--dm-border:rgba(167,139,250,.18);}
+.dm-top{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1.2rem;border-bottom:1px solid var(--dm-border);background:#0d0d1a;}
+.dm-top-l{display:flex;align-items:center;gap:.8rem;}
+.dm-dots{display:flex;gap:6px;}
+.dm-dots span{width:11px;height:11px;border-radius:50%;display:block;}
+.dm-dots span:nth-child(1){background:#ff5f57;}
+.dm-dots span:nth-child(2){background:#febc2e;}
+.dm-dots span:nth-child(3){background:#28c840;}
+.dm-logo{width:34px;height:34px;border-radius:8px;border:1px solid var(--dm-acc);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:.85rem;color:var(--dm-acc);}
+.dm-title h2{font-family:'Orbitron',sans-serif;font-size:1.05rem;font-weight:900;letter-spacing:.12em;background:linear-gradient(135deg,var(--dm-acc),var(--dm-acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;}
+.dm-title small{display:block;color:#6b6b85;font-size:.68rem;font-family:monospace;letter-spacing:.05em;}
+.dm-close{background:rgba(167,139,250,.08);border:1px solid var(--dm-border);color:var(--dm-acc);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1rem;}
+.dm-close:hover{background:rgba(167,139,250,.18);}
+.dm-body{flex:1;display:flex;overflow:hidden;}
+.dm-sidebar{width:200px;flex-shrink:0;border-right:1px solid var(--dm-border);background:#0d0d1a;overflow-y:auto;padding:1rem .7rem;display:flex;flex-direction:column;gap:.3rem;}
+.dm-side-foot{margin-top:auto;text-align:center;padding-top:1rem;color:#5a5a72;font-size:.65rem;letter-spacing:.1em;font-family:monospace;line-height:1.8;}
+.dm-tab{padding:.65rem .9rem;border-radius:8px;color:#7c7c96;font-size:.8rem;letter-spacing:.03em;cursor:pointer;display:flex;align-items:center;gap:.7rem;border:1px solid transparent;background:none;text-align:left;width:100%;font-family:inherit;font-weight:500;}
+.dm-tab i{width:16px;text-align:center;color:var(--dm-acc);}
+.dm-tab:hover{color:#e8e6f5;background:rgba(167,139,250,.06);}
+.dm-tab.active{color:#fff;background:rgba(167,139,250,.14);border-color:var(--dm-border);font-weight:700;}
+.dm-tab.active i{color:var(--dm-acc2);}
+.dm-content{flex:1;overflow-y:auto;padding:1.4rem;background:var(--dm-bg);}
+.dm-panel{display:none;}
+.dm-panel.active{display:block;}
+.dm-panel h3{font-family:'Orbitron',sans-serif;color:var(--dm-acc2);margin-bottom:1rem;font-size:1.1rem;letter-spacing:.08em;}
+.dm-card{background:var(--dm-panel);border:1px solid var(--dm-border);border-radius:10px;padding:1rem;margin-bottom:1rem;}
+
+/* Terminal */
+#term-out{background:#08080f;border:1px solid var(--dm-border);border-radius:10px;padding:1.2rem;height:340px;overflow-y:auto;font-family:'Fira Code',monospace;font-size:.82rem;color:#c8c8e0;margin-bottom:.6rem;white-space:pre-wrap;line-height:1.6;}
+#term-out .tline{margin-bottom:.4rem;}
+#term-out .tcmd{color:var(--dm-acc2);font-weight:700;}
+#term-out .tprompt{color:var(--dm-acc);font-weight:700;}
+#term-out .tmuted{color:#5a5a72;}
+#term-cursor{display:inline-block;width:7px;height:1em;background:var(--dm-acc2);vertical-align:text-bottom;animation:dmblink 1s step-end infinite;margin-left:2px;}
+@keyframes dmblink{50%{opacity:0;}}
+.term-in-row{display:flex;gap:.5rem;align-items:center;background:#08080f;border:1px solid var(--dm-border);border-radius:10px;padding:.7rem 1rem;}
+.term-in-row span{color:var(--dm-acc);font-family:monospace;font-weight:700;}
+#term-in{flex:1;background:transparent;border:none;color:#e8e6f5;font-family:monospace;font-size:.85rem;outline:none;}
+.term-quick{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.8rem;}
+.term-quick button{font-size:.7rem;padding:.45rem .9rem;border-radius:16px;border:1px solid var(--dm-border);background:var(--dm-panel);color:var(--dm-acc2);cursor:pointer;letter-spacing:.04em;display:flex;align-items:center;gap:.4rem;font-weight:600;transition:all .2s;}
+.term-quick button:hover{background:rgba(167,139,250,.12);border-color:var(--dm-acc);}
+.term-foot{display:flex;gap:.6rem;}
+.term-foot button{font-size:.72rem;padding:.45rem .9rem;border-radius:8px;border:1px solid var(--dm-border);background:var(--dm-panel);color:#a78bfa;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:.4rem;}
+.term-foot button:hover{background:rgba(167,139,250,.12);}
+
+/* Generic dev form */
+.dm-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+.dm-grid label,.dm-full label{display:block;font-size:.68rem;color:#7c7c96;margin-bottom:.3rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;}
+.dm-grid input,.dm-grid select,.dm-grid textarea,.dm-full input,.dm-full textarea,.dm-full select{width:100%;background:#08080f;border:1px solid var(--dm-border);border-radius:8px;color:#e8e6f5;font-family:inherit;font-size:.85rem;padding:.6rem .8rem;outline:none;}
+.dm-grid input:focus,.dm-grid textarea:focus,.dm-full input:focus,.dm-full textarea:focus{border-color:var(--dm-acc);box-shadow:0 0 0 3px rgba(167,139,250,.1);}
+.dm-full{margin-bottom:.8rem;}
+.dm-btn{padding:.65rem 1.3rem;border-radius:8px;border:none;background:linear-gradient(135deg,var(--dm-acc),#7c5fd6);color:#fff;font-weight:700;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;}
+.dm-btn:hover{box-shadow:0 4px 20px rgba(167,139,250,.4);}
+.dm-btn.outline{background:none;border:1px solid var(--dm-border);color:var(--dm-acc2);}
+.dm-btn.outline:hover{background:rgba(167,139,250,.08);}
+.dm-row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
+
+/* Typing test */
+#typ-pass{background:#08080f;border:1px solid var(--dm-border);border-radius:8px;padding:.85rem 1rem;font-size:.85rem;line-height:1.6;margin-bottom:.6rem;font-family:monospace;max-width:560px;}
+#typ-pass span.ok{color:#64c878;}
+#typ-pass span.bad{color:#e05555;text-decoration:underline;}
+#typ-in{max-width:560px;}
+.typ-stats{display:flex;gap:.6rem;margin-top:.7rem;max-width:560px;}
+.typ-stat{flex:1;text-align:center;background:var(--dm-panel);border:1px solid var(--dm-border);border-radius:8px;padding:.5rem;}
+.typ-stat b{display:block;font-family:'Orbitron',sans-serif;color:var(--dm-acc2);font-size:1.1rem;}
+.typ-stat span{font-size:.6rem;color:#7c7c96;letter-spacing:.1em;text-transform:uppercase;}
+
+/* QR */
+#qr-out{display:flex;flex-direction:column;align-items:center;gap:.8rem;margin-top:1rem;}
+#qr-canvas{background:#fff;padding:10px;border-radius:8px;}
+
+/* API playground */
+#api-resp{background:#08080f;border:1px solid var(--dm-border);border-radius:8px;padding:1rem;font-family:monospace;font-size:.75rem;color:#9effa0;max-height:320px;overflow:auto;white-space:pre-wrap;margin-top:.8rem;}
+.api-meta{display:flex;gap:1rem;margin-top:.6rem;font-size:.72rem;color:#7c7c96;}
+.api-meta b{color:var(--dm-acc2);}
+.api-preset{font-size:.68rem;padding:.4rem .8rem;border-radius:14px;border:1px solid var(--dm-border);background:var(--dm-panel);color:var(--dm-acc2);cursor:pointer;font-weight:600;}
+.api-preset:hover{background:rgba(167,139,250,.12);}
+
+/* About profile */
+.dm-profile{display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap;}
+.dm-profile-pic{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--dm-acc),#7c5fd6);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.6rem;color:#fff;flex-shrink:0;}
+.dm-tech-pill{display:inline-block;padding:.25rem .7rem;border-radius:14px;background:rgba(167,139,250,.1);border:1px solid var(--dm-border);color:var(--dm-acc2);font-size:.7rem;margin:.2rem;font-weight:600;}
+
+/* Responsive */
+@media(max-width:768px){
+  .dm-body{flex-direction:column;}
+  .dm-sidebar{width:100%;flex-direction:row;overflow-x:auto;border-right:none;border-bottom:1px solid var(--dm-border);}
+  .dm-tab{flex-shrink:0;white-space:nowrap;}
+  .dm-grid{grid-template-columns:1fr;}
+  .dm-content{padding:1rem;}
+  #term-out{height:240px;}
+  .typ-stats{flex-wrap:wrap;}
+}
+
 </style>
 </head>
 <body>
@@ -710,6 +810,7 @@ body::after{content:'';position:fixed;inset:0;z-index:99998;pointer-events:none;
   </ul>
   <div class="nav-r">
     <button class="dl-cv" onclick="dlCV()"><i class="fas fa-download"></i> Download CV</button>
+    <button class="nav-btn dev-btn" id="devbtn" onclick="toggleDev()" title="Dev Mode">DEV</button>
     <button class="nav-btn" id="thmbtn" onclick="toggleTheme()" title="Toggle Theme"><i class="fas fa-moon" id="thmico"></i></button>
     <div class="hbg" id="hbg" onclick="toggleMenu()"><span></span><span></span><span></span></div>
   </div>
@@ -1003,18 +1104,18 @@ body::after{content:'';position:fixed;inset:0;z-index:99998;pointer-events:none;
 <script>
 // ── LOADER
 // ── LOADER with phases
-var ldPhases = ['Initializing systems...','Loading particles...','Rendering components...','Almost ready...','Welcome!'];
+var ldPhases = ['Initializing systems...','Loading particles...','Compiling assets...','Rendering components...','Optimizing layout...','Almost ready...','Welcome!'];
 var ldIdx = 0;
 var ldEl = document.getElementById('ld-phase');
 var ldTimer = setInterval(function() {
   ldIdx++;
   if (ldIdx < ldPhases.length && ldEl) ldEl.textContent = ldPhases[ldIdx];
   if (ldIdx >= ldPhases.length - 1) clearInterval(ldTimer);
-}, 900);
+}, 1000);
 window.addEventListener('load', function() {
   setTimeout(function() {
     document.getElementById('loader').classList.add('out');
-  }, 4500);
+  }, 6200);
 });
 
 // ── CURSOR (smooth lerp + network integration) — desktop only
@@ -1449,7 +1550,7 @@ function dlCV() {
     'CURRICULUM VITAE',
     '='.repeat(45),
     'SHLOKA DAHAL',
-    'Computer Engineering Student',
+    'Computer Engineering Student | C/C++ Developer',
     '='.repeat(45),
     '',
     'CONTACT INFORMATION',
@@ -1458,15 +1559,14 @@ function dlCV() {
     'Location : Bhaktapur, Nepal',
     'GitHub   : github.com/shlokadahal222',
     'LinkedIn : linkedin.com/in/shloka-dahal-7a422a411',
-    'Instagram: @shloka.dahal',
-    'Facebook : facebook.com/shloka.dahal.2025',
     '',
-    'PERSONAL INFORMATION',
+    'PROFESSIONAL SUMMARY',
     '-'.repeat(30),
-    'Full Name     : Shloka Dahal',
-    'Date of Birth : 2062-11-21 (B.S.)',
-    'Hometown      : Janakpur, Nepal',
-    'Address       : Bhaktapur, Nepal (Permanent)',
+    'Motivated Computer Engineering student with a strong',
+    'foundation in C and C++ programming, problem-solving,',
+    'and web fundamentals (HTML, CSS, JavaScript). Eager to',
+    'apply analytical thinking and a fast-learning mindset',
+    'to real-world software development projects.',
     '',
     'EDUCATION',
     '-'.repeat(30),
@@ -1477,7 +1577,6 @@ function dlCV() {
     '',
     '[Completed]',
     'Higher Secondary (+2) - Science (Biology)',
-    'Nepal',
     '',
     '[Completed]',
     'School Education (SEE)',
@@ -1660,5 +1759,449 @@ if (!isTouchDevice) {
   });
 }
 </script>
+<!-- ══ DEV MODE ══ -->
+<div id="devmode">
+  <div class="dm-top">
+    <div class="dm-top-l">
+      <div class="dm-dots"><span></span><span></span><span></span></div>
+      <div class="dm-logo">SD</div>
+      <div class="dm-title"><h2>DEV MODE</h2><small>shloka@portfolio ~ v2.0</small></div>
+    </div>
+    <button class="dm-close" onclick="toggleDev()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="dm-body">
+    <div class="dm-sidebar">
+      <button class="dm-tab active" data-tab="terminal" onclick="dmTab('terminal')"><i class="fas fa-terminal"></i> Terminal</button>
+      <button class="dm-tab" data-tab="cv" onclick="dmTab('cv')"><i class="fas fa-file-alt"></i> CV Builder</button>
+      <button class="dm-tab" data-tab="typing" onclick="dmTab('typing')"><i class="fas fa-keyboard"></i> Typing Test</button>
+      <button class="dm-tab" data-tab="cover" onclick="dmTab('cover')"><i class="fas fa-envelope-open-text"></i> Cover Letter</button>
+      <button class="dm-tab" data-tab="qr" onclick="dmTab('qr')"><i class="fas fa-qrcode"></i> QR Generator</button>
+      <button class="dm-tab" data-tab="api" onclick="dmTab('api')"><i class="fas fa-network-wired"></i> API Playground</button>
+      <button class="dm-tab" data-tab="about" onclick="dmTab('about')"><i class="fas fa-user-circle"></i> About</button>
+      <div class="dm-side-foot">ESC to close<br/><span id="dm-clock">--:--:-- --</span></div>
+    </div>
+    <div class="dm-content">
+
+      <!-- TERMINAL -->
+      <div class="dm-panel active" id="dm-terminal">
+        <h3>Interactive Terminal</h3>
+        <div id="term-out"></div>
+        <div class="term-in-row">
+          <span>&gt;</span>
+          <input id="term-in" autocomplete="off" placeholder="type a command and press Enter..."/>
+        </div>
+        <div class="term-quick">
+          <button onclick="dmTab('cv')"><i class="fas fa-file-alt"></i> CV Builder</button>
+          <button onclick="dmTab('typing')"><i class="fas fa-keyboard"></i> Typing Test</button>
+          <button onclick="dmTab('cover')"><i class="fas fa-envelope-open-text"></i> Cover Letter</button>
+          <button onclick="dmTab('qr')"><i class="fas fa-qrcode"></i> QR Generator</button>
+          <button onclick="dmTab('api')"><i class="fas fa-network-wired"></i> API Playground</button>
+          <button onclick="dmTab('about')"><i class="fas fa-user-circle"></i> About</button>
+        </div>
+        <div class="term-foot" style="margin-top:.5rem;">
+          <button onclick="termRun('help')"><i class="fas fa-question-circle"></i> help</button>
+          <button onclick="termOut.innerHTML=''"><i class="fas fa-trash"></i> clear</button>
+        </div>
+      </div>
+
+      <!-- CV BUILDER -->
+      <div class="dm-panel" id="dm-cv">
+        <h3>Advanced CV Builder</h3>
+        <div class="dm-card">
+          <div class="dm-grid">
+            <div><label>Full Name</label><input id="cvName" value="Shloka Dahal"/></div>
+            <div><label>Role / Title</label><input id="cvRole" value="Computer Engineering Student | C/C++ Developer"/></div>
+            <div><label>Email</label><input id="cvEmail" value="shlokadahal@gmail.com"/></div>
+            <div><label>Phone</label><input id="cvPhone" value="+977-XXXXXXXXXX"/></div>
+            <div><label>Location</label><input id="cvLoc" value="Bhaktapur, Nepal"/></div>
+            <div><label>GitHub</label><input id="cvGit" value="github.com/Shlokadahal-cpu"/></div>
+            <div><label>LinkedIn</label><input id="cvLinkedin" value="linkedin.com/in/shloka-dahal-7a422a411"/></div>
+            <div><label>Portfolio Website</label><input id="cvWeb" value="shlokadahal.netlify.app"/></div>
+          </div>
+        </div>
+        <div class="dm-card">
+          <div class="dm-full"><label>Professional Summary</label><textarea rows="3" id="cvSummary">Motivated Computer Engineering student with a strong foundation in C and C++ programming, problem-solving, and web fundamentals (HTML, CSS, JavaScript). Eager to apply analytical thinking and a fast-learning mindset to real-world software development projects.</textarea></div>
+          <div class="dm-full"><label>Education (one entry per line)</label><textarea rows="3" id="cvEdu">B.E. Computer Engineering — Himalaya College of Engineering, Tribhuvan University (2025–Present)
++2 Science (Biology) — Completed
+SEE — Om Gyan Mandir School</textarea></div>
+          <div class="dm-full"><label>Skills (comma separated)</label><textarea rows="2" id="cvSkills">C Programming, C++ Programming, HTML & CSS, JavaScript, Git & GitHub, Problem Solving, Data Structures</textarea></div>
+          <div class="dm-full"><label>Projects (one per line)</label><textarea rows="3" id="cvProj">C Programming Project — github.com/Shlokadahal/cprogram
+Personal Portfolio Website — HTML, CSS, JavaScript
+C++ Project (In Progress) — OOP & DSA focus</textarea></div>
+          <div class="dm-full"><label>Certifications (one per line, optional)</label><textarea rows="2" id="cvCerts">Introduction to Programming — Online Course
+Git & GitHub Fundamentals — Online Course</textarea></div>
+          <div class="dm-full"><label>Languages (comma separated)</label><textarea rows="1" id="cvLangs">Nepali (Native), English (Professional Working), Hindi (Fluent)</textarea></div>
+        </div>
+        <button class="dm-btn" onclick="dmBuildCV()"><i class="fas fa-download"></i> Generate & Download CV</button>
+      </div>
+
+      <!-- TYPING TEST -->
+      <div class="dm-panel" id="dm-typing">
+        <h3>Typing Speed Test</h3>
+        <div id="typ-pass"></div>
+        <input id="typ-in" class="dm-full" style="width:100%" placeholder="Start typing here..." autocomplete="off"/>
+        <div class="typ-stats">
+          <div class="typ-stat"><b id="typ-wpm">0</b><span>WPM</span></div>
+          <div class="typ-stat"><b id="typ-acc">100%</b><span>Accuracy</span></div>
+          <div class="typ-stat"><b id="typ-err">0</b><span>Errors</span></div>
+        </div>
+        <div class="dm-row" style="margin-top:.8rem;"><button class="dm-btn outline" onclick="dmTypingReset()"><i class="fas fa-redo"></i> Restart</button></div>
+      </div>
+
+      <!-- COVER LETTER -->
+      <div class="dm-panel" id="dm-cover">
+        <h3>Cover Letter Generator</h3>
+        <div class="dm-grid" style="margin-bottom:.8rem;">
+          <div><label>Job Title</label><input id="clJob" placeholder="e.g. Junior C++ Developer"/></div>
+          <div><label>Company Name</label><input id="clCo" placeholder="e.g. Tech Solutions Pvt. Ltd."/></div>
+        </div>
+        <button class="dm-btn" onclick="dmGenCover()"><i class="fas fa-magic"></i> Generate</button>
+        <div class="dm-full" style="margin-top:.8rem;"><textarea rows="14" id="clOut" placeholder="Your cover letter will appear here..."></textarea></div>
+        <div class="dm-row">
+          <button class="dm-btn outline" onclick="dmCopyCover()"><i class="fas fa-copy"></i> Copy</button>
+          <button class="dm-btn outline" onclick="dmDownloadCover()"><i class="fas fa-download"></i> Download</button>
+        </div>
+      </div>
+
+      <!-- QR -->
+      <div class="dm-panel" id="dm-qr">
+        <h3>QR Code Generator</h3>
+        <div class="dm-full"><label>Text / URL / Contact</label><input id="qrText" placeholder="https://example.com"/></div>
+        <div class="dm-grid">
+          <div><label>Foreground</label><input type="color" id="qrFg" value="#06060f"/></div>
+          <div><label>Background</label><input type="color" id="qrBg" value="#ffffff"/></div>
+          <div><label>Size (px)</label><input type="number" id="qrSize" value="240" min="100" max="600"/></div>
+        </div>
+        <button class="dm-btn" style="margin-top:.8rem;" onclick="dmGenQR()"><i class="fas fa-qrcode"></i> Generate</button>
+        <div id="qr-out"></div>
+      </div>
+
+      <!-- API PLAYGROUND -->
+      <div class="dm-panel" id="dm-api">
+        <h3>API Playground</h3>
+        <div class="dm-row" style="margin-bottom:.6rem;">
+          <span class="api-preset" onclick="dmApiPreset('https://jsonplaceholder.typicode.com/posts/1')">JSONPlaceholder</span>
+          <span class="api-preset" onclick="dmApiPreset('https://catfact.ninja/fact')">Cat Fact</span>
+          <span class="api-preset" onclick="dmApiPreset('https://api.github.com/users/octocat')">GitHub API</span>
+          <span class="api-preset" onclick="dmApiPreset('https://ipapi.co/json/')">IP Info</span>
+          <span class="api-preset" onclick="dmApiPreset('https://official-joke-api.appspot.com/random_joke')">Joke API</span>
+        </div>
+        <div class="dm-row">
+          <select id="apiMethod" style="width:110px;"><option>GET</option><option>POST</option><option>PUT</option><option>DELETE</option><option>PATCH</option></select>
+          <input id="apiUrl" style="flex:1;" placeholder="https://api.example.com/endpoint"/>
+          <button class="dm-btn" onclick="dmSendApi()"><i class="fas fa-paper-plane"></i> Send</button>
+        </div>
+        <div class="dm-full" style="margin-top:.6rem;"><label>Headers (JSON)</label><textarea rows="2" id="apiHeaders" placeholder='{"Content-Type":"application/json"}'></textarea></div>
+        <div class="dm-full"><label>Body (JSON)</label><textarea rows="3" id="apiBody" placeholder='{"key":"value"}'></textarea></div>
+        <div class="api-meta"><span>Status: <b id="apiStatus">—</b></span><span>Time: <b id="apiTime">—</b></span></div>
+        <div id="api-resp">Response will appear here...</div>
+      </div>
+
+      <!-- ABOUT -->
+      <div class="dm-panel" id="dm-about">
+        <h3>About This Dev Mode</h3>
+        <div class="dm-card dm-profile">
+          <div class="dm-profile-pic">SD</div>
+          <div>
+            <strong style="color:var(--gold);font-size:1.05rem;">Shloka Dahal</strong>
+            <p style="color:var(--text2);font-size:.85rem;margin-top:.3rem;">Computer Engineering student building tools, mini-apps and a portfolio with a hidden developer toolkit.</p>
+          </div>
+        </div>
+        <div class="dm-card">
+          <strong style="color:var(--gold);font-size:.85rem;letter-spacing:.1em;">TECH STACK</strong>
+          <div style="margin-top:.6rem;">
+            <span class="dm-tech-pill">HTML5</span><span class="dm-tech-pill">CSS3</span><span class="dm-tech-pill">JavaScript</span><span class="dm-tech-pill">Canvas API</span><span class="dm-tech-pill">Fetch API</span><span class="dm-tech-pill">LocalStorage-free state</span>
+          </div>
+        </div>
+        <div class="dm-card">
+          <strong style="color:var(--gold);font-size:.85rem;letter-spacing:.1em;">FEATURES</strong>
+          <ul style="margin-top:.6rem;padding-left:1.2rem;color:var(--text2);font-size:.85rem;line-height:1.8;">
+            <li>Interactive fake terminal with CLI-style commands</li>
+            <li>CV Builder generating a downloadable .txt resume</li>
+            <li>Real-time typing speed test (WPM / accuracy)</li>
+            <li>Auto cover letter generator</li>
+            <li>QR code generator with custom colors & sizes</li>
+            <li>Mini API playground with public API presets</li>
+            <li>Fully responsive dev toolkit, separate from the main portfolio</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+// ══ DEV MODE LOGIC ══
+function toggleDev(){
+  document.getElementById('devmode').classList.toggle('open');
+  var isOpen=document.getElementById('devmode').classList.contains('open');
+  if(isOpen){
+    document.body.style.overflow='hidden';
+    if(cur) cur.style.opacity='0';
+    if(ring) ring.style.opacity='0';
+  } else {
+    document.body.style.overflow='';
+  }
+}
+function dmTab(name){
+  document.querySelectorAll('.dm-tab').forEach(function(t){t.classList.toggle('active', t.dataset.tab===name);});
+  document.querySelectorAll('.dm-panel').forEach(function(p){p.classList.toggle('active', p.id==='dm-'+name);});
+  if(name==='typing') dmTypingInit();
+}
+
+// — TERMINAL —
+var termOut = null, termIn = null, termBusy = false;
+function termPrint(html, cls){
+  var d=document.createElement('div'); d.className='tline'+(cls?' '+cls:''); d.innerHTML=html; termOut.appendChild(d); termOut.scrollTop=termOut.scrollHeight;
+  return d;
+}
+// types out plain text into a line, char by char
+function termType(text, cls, speed, cb){
+  var d=document.createElement('div'); d.className='tline'+(cls?' '+cls:''); termOut.appendChild(d);
+  var i=0;
+  function step(){
+    d.textContent=text.slice(0,i);
+    if(i<text.length){ i++; termOut.scrollTop=termOut.scrollHeight; setTimeout(step,speed||14); }
+    else if(cb) cb();
+  }
+  step();
+}
+function termTypeMulti(lines, cb, speed){
+  var idx=0;
+  function next(){
+    if(idx>=lines.length){ if(cb) cb(); return; }
+    termType(lines[idx], '', speed, function(){ idx++; next(); });
+  }
+  next();
+}
+function termInit(){
+  termOut=document.getElementById('term-out'); termIn=document.getElementById('term-in');
+  termPrint('<span class="tcmd">Dikshant\'s Dev Mode — v2.0</span>'.replace('Dikshant','Shloka'));
+  termPrint('<span class="tmuted">Use the sidebar tabs or quick buttons below.</span>');
+  termPrint('<span class="tmuted">Type <span class="tcmd">help</span> for commands.</span>');
+  termPrint('<span class="tprompt">&gt;</span> <span class="tmuted">type a command and press Enter...</span>');
+  termIn.addEventListener('keydown', function(e){
+    if(e.key==='Enter'){
+      if(termBusy) return;
+      var cmd=termIn.value.trim(); termIn.value='';
+      if(!cmd) return;
+      termPrint('<span class="tprompt">&gt;</span> '+cmd);
+      termRun(cmd.toLowerCase());
+    }
+  });
+}
+function termRun(cmd){
+  termBusy=true; termIn.disabled=true;
+  function done(){ termBusy=false; termIn.disabled=false; termIn.focus(); }
+  switch(cmd){
+    case 'help':
+      termTypeMulti([
+        'Available commands:',
+        '  help      Show this list of commands',
+        '  about     Short intro about me',
+        '  skills    List of technical skills',
+        '  projects  Show current projects',
+        '  contact   Contact information',
+        '  whoami    Who am I?',
+        '  date      Show current date & time',
+        '  clear     Clear the terminal'
+      ], done, 8);
+      break;
+    case 'about':
+      termTypeMulti(['Shloka Dahal — Computer Engineering student passionate','about C/C++ and web development. Building the future,','one line of code at a time.'], done, 10);
+      break;
+    case 'skills':
+      termTypeMulti(['C, C++, HTML5, CSS3, JavaScript','Git, GitHub, OOP, Data Structures & Algorithms'], done, 10);
+      break;
+    case 'projects':
+      termTypeMulti(['1. C Programming Project — github.com/Shlokadahal/cprogram','2. Personal Portfolio Website — HTML, CSS, JS','3. C++ Project (In Progress) — OOP & DSA'], done, 8);
+      break;
+    case 'contact':
+      termTypeMulti(['Email   : shlokadahal@gmail.com','GitHub  : github.com/Shlokadahal-cpu','Location: Bhaktapur, Nepal'], done, 10);
+      break;
+    case 'whoami':
+      termType('shloka — Computer Engineering Student & Developer', '', 12, done);
+      break;
+    case 'date':
+      termType(new Date().toString(), '', 8, done);
+      break;
+    case 'clear':
+      termOut.innerHTML=''; done(); break;
+    default:
+      termType('Command not found: '+cmd+'. Type "help" for a list.', '', 12, done);
+  }
+}
+
+// — CV BUILDER —
+function dmBuildCV(){
+  var name=document.getElementById('cvName').value||'—';
+  var role=document.getElementById('cvRole').value||'—';
+  var email=document.getElementById('cvEmail').value||'—';
+  var phone=document.getElementById('cvPhone').value||'—';
+  var loc=document.getElementById('cvLoc').value||'—';
+  var git=document.getElementById('cvGit').value||'—';
+  var linkedin=document.getElementById('cvLinkedin').value||'—';
+  var web=document.getElementById('cvWeb').value||'—';
+  var summary=document.getElementById('cvSummary').value||'';
+  var edu=document.getElementById('cvEdu').value.split('\n').filter(Boolean);
+  var skills=document.getElementById('cvSkills').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
+  var proj=document.getElementById('cvProj').value.split('\n').filter(Boolean);
+  var certs=document.getElementById('cvCerts').value.split('\n').filter(Boolean);
+  var langs=document.getElementById('cvLangs').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
+  var lines=[
+    'CURRICULUM VITAE','='.repeat(50),name.toUpperCase(),role,'='.repeat(50),'',
+    'CONTACT','-'.repeat(35),
+    'Email    : '+email,'Phone    : '+phone,'Location : '+loc,
+    'GitHub   : '+git,'LinkedIn : '+linkedin,'Portfolio: '+web,''
+  ];
+  if(summary){ lines.push('PROFESSIONAL SUMMARY','-'.repeat(35),summary,''); }
+  lines.push('EDUCATION','-'.repeat(35));
+  edu.forEach(function(e){lines.push('- '+e);});
+  lines.push('','SKILLS','-'.repeat(35));
+  skills.forEach(function(s){lines.push('- '+s);});
+  lines.push('','PROJECTS','-'.repeat(35));
+  proj.forEach(function(p){lines.push('- '+p);});
+  if(certs.length){ lines.push('','CERTIFICATIONS','-'.repeat(35)); certs.forEach(function(c){lines.push('- '+c);}); }
+  if(langs.length){ lines.push('','LANGUAGES','-'.repeat(35)); langs.forEach(function(l){lines.push('- '+l);}); }
+  lines.push('','='.repeat(50),'Generated: '+new Date().toLocaleDateString(),'='.repeat(50));
+  var blob=new Blob([lines.join('\n')],{type:'text/plain'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name.replace(/\s+/g,'_')+'_CV.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(a.href);
+}
+
+// — TYPING TEST —
+var typPassages=[
+  'The quick brown fox jumps over the lazy dog while the sun sets behind the mountains.',
+  'Practice makes perfect, and consistent effort every day leads to great improvement over time.',
+  'Computer engineering combines hardware design, software development, and problem solving skills.',
+  'Success is the sum of small efforts repeated day in and day out without losing motivation.'
+];
+var typState={text:'',start:null,errors:0,timer:null};
+function dmTypingInit(){
+  typState.text=typPassages[Math.floor(Math.random()*typPassages.length)];
+  typState.start=null; typState.errors=0;
+  document.getElementById('typ-in').value='';
+  document.getElementById('typ-wpm').textContent='0';
+  document.getElementById('typ-acc').textContent='100%';
+  document.getElementById('typ-err').textContent='0';
+  renderPassage('');
+  var inp=document.getElementById('typ-in');
+  inp.oninput=function(){
+    if(!typState.start) typState.start=Date.now();
+    var val=inp.value;
+    renderPassage(val);
+    var errors=0;
+    for(var i=0;i<val.length;i++){ if(val[i]!==typState.text[i]) errors++; }
+    typState.errors=errors;
+    var elapsed=(Date.now()-typState.start)/60000;
+    var wpm=elapsed>0?Math.round((val.length/5)/elapsed):0;
+    var acc=val.length>0?Math.round(((val.length-errors)/val.length)*100):100;
+    document.getElementById('typ-wpm').textContent=wpm;
+    document.getElementById('typ-acc').textContent=acc+'%';
+    document.getElementById('typ-err').textContent=errors;
+  };
+}
+function renderPassage(typed){
+  var html='';
+  for(var i=0;i<typState.text.length;i++){
+    var ch=typState.text[i];
+    if(i<typed.length){ html+= '<span class="'+(typed[i]===ch?'ok':'bad')+'">'+ch+'</span>'; }
+    else html+=ch;
+  }
+  document.getElementById('typ-pass').innerHTML=html;
+}
+function dmTypingReset(){ dmTypingInit(); }
+
+// — COVER LETTER —
+function dmGenCover(){
+  var job=document.getElementById('clJob').value||'the position';
+  var co=document.getElementById('clCo').value||'your company';
+  var letter='Dear Hiring Manager,\n\n'+
+  'I am writing to express my interest in the '+job+' role at '+co+'. As a Computer Engineering student with hands-on experience in C, C++, and web development (HTML, CSS, JavaScript), I am eager to bring my problem-solving skills and dedication to your team.\n\n'+
+  'Throughout my academic journey, I have worked on projects ranging from core C/C++ programs to a fully responsive personal portfolio website, strengthening my understanding of data structures, algorithms, and clean code practices. I am a fast learner who thrives in collaborative environments and is committed to continuous improvement.\n\n'+
+  'I would welcome the opportunity to discuss how my skills and enthusiasm can contribute to '+co+'. Thank you for considering my application.\n\n'+
+  'Sincerely,\nShloka Dahal\nshlokadahal@gmail.com';
+  document.getElementById('clOut').value=letter;
+}
+function dmCopyCover(){
+  var t=document.getElementById('clOut'); t.select(); document.execCommand('copy');
+}
+function dmDownloadCover(){
+  var content=document.getElementById('clOut').value;
+  if(!content) return;
+  var blob=new Blob([content],{type:'text/plain'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='Cover_Letter.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(a.href);
+}
+
+// — QR —
+function dmGenQR(){
+  var text=document.getElementById('qrText').value.trim();
+  if(!text){ alert('Enter text or a URL first.'); return; }
+  var fg=document.getElementById('qrFg').value;
+  var bg=document.getElementById('qrBg').value;
+  var size=parseInt(document.getElementById('qrSize').value)||240;
+  var out=document.getElementById('qr-out');
+  out.innerHTML='';
+  var holder=document.createElement('div');
+  out.appendChild(holder);
+  new QRCode(holder,{text:text,width:size,height:size,colorDark:fg,colorLight:bg,correctLevel:QRCode.CorrectLevel.H});
+  setTimeout(function(){
+    var img=holder.querySelector('img')||holder.querySelector('canvas');
+    var btnPng=document.createElement('button'); btnPng.className='dm-btn outline'; btnPng.innerHTML='<i class="fas fa-download"></i> Download PNG';
+    btnPng.onclick=function(){
+      var canvas=holder.querySelector('canvas');
+      var a=document.createElement('a'); a.download='qrcode.png'; a.href=canvas.toDataURL('image/png'); a.click();
+    };
+    out.appendChild(btnPng);
+  },200);
+}
+
+// — API PLAYGROUND —
+function dmApiPreset(url){ document.getElementById('apiUrl').value=url; }
+async function dmSendApi(){
+  var method=document.getElementById('apiMethod').value;
+  var url=document.getElementById('apiUrl').value.trim();
+  var respEl=document.getElementById('api-resp');
+  var statusEl=document.getElementById('apiStatus');
+  var timeEl=document.getElementById('apiTime');
+  if(!url){ respEl.textContent='Enter a URL first.'; return; }
+  var headers={};
+  try{ var h=document.getElementById('apiHeaders').value.trim(); if(h) headers=JSON.parse(h); }catch(e){ respEl.textContent='Invalid headers JSON.'; return; }
+  var opts={method:method,headers:headers};
+  if(method!=='GET' && method!=='HEAD'){
+    var b=document.getElementById('apiBody').value.trim();
+    if(b){ opts.body=b; if(!headers['Content-Type']) headers['Content-Type']='application/json'; }
+  }
+  respEl.textContent='Loading...'; statusEl.textContent='—'; timeEl.textContent='—';
+  var t0=performance.now();
+  try{
+    var res=await fetch(url,opts);
+    var t1=performance.now();
+    statusEl.textContent=res.status+' '+res.statusText;
+    timeEl.textContent=Math.round(t1-t0)+' ms';
+    var ct=res.headers.get('content-type')||'';
+    var data = ct.includes('application/json') ? JSON.stringify(await res.json(),null,2) : await res.text();
+    respEl.textContent=data;
+  }catch(err){
+    statusEl.textContent='Error'; respEl.textContent=String(err);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  termInit();
+  function tick(){
+    var el=document.getElementById('dm-clock');
+    if(el) el.textContent=new Date().toLocaleTimeString();
+  }
+  tick(); setInterval(tick,1000);
+});
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape' && document.getElementById('devmode').classList.contains('open')) toggleDev();
+});
+</script>
+
 </body>
 </html>
