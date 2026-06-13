@@ -657,12 +657,20 @@ body::after{content:'';position:fixed;inset:0;z-index:99998;pointer-events:none;
 .dm-body{flex:1;display:flex;overflow:hidden;}
 .dm-sidebar{width:200px;flex-shrink:0;border-right:1px solid var(--dm-border);background:#0d0d1a;overflow-y:auto;padding:1rem .7rem;display:flex;flex-direction:column;gap:.3rem;}
 .dm-side-foot{margin-top:auto;text-align:center;padding-top:1rem;color:#5a5a72;font-size:.65rem;letter-spacing:.1em;font-family:monospace;line-height:1.8;}
+.dm-group-label{font-size:.62rem;color:#5a5a72;letter-spacing:.18em;text-transform:uppercase;font-weight:700;padding:.8rem .6rem .25rem;}
+.dm-sidebar{width:225px;}
+.dm-search{position:relative;margin-bottom:.5rem;}
+.dm-search input{width:100%;background:#08080f;border:1px solid var(--dm-border);border-radius:8px;color:#e8e6f5;font-size:.78rem;padding:.55rem .8rem .55rem 2.1rem;outline:none;}
+.dm-search input:focus{border-color:var(--dm-acc);}
+.dm-search i{position:absolute;left:.8rem;top:50%;transform:translateY(-50%);color:#5a5a72;font-size:.75rem;}
+.dm-tab.hidden{display:none;}
+.dm-group-label.hidden{display:none;}
 .dm-tab{padding:.65rem .9rem;border-radius:8px;color:#7c7c96;font-size:.8rem;letter-spacing:.03em;cursor:pointer;display:flex;align-items:center;gap:.7rem;border:1px solid transparent;background:none;text-align:left;width:100%;font-family:inherit;font-weight:500;}
 .dm-tab i{width:16px;text-align:center;color:var(--dm-acc);}
 .dm-tab:hover{color:#e8e6f5;background:rgba(167,139,250,.06);}
 .dm-tab.active{color:#fff;background:rgba(167,139,250,.14);border-color:var(--dm-border);font-weight:700;}
 .dm-tab.active i{color:var(--dm-acc2);}
-.dm-content{flex:1;overflow-y:auto;padding:1.4rem;background:var(--dm-bg);}
+.dm-content{flex:1;overflow-y:auto;padding:1.4rem;background:var(--dm-bg);padding-bottom:3rem;}
 .dm-panel{display:none;}
 .dm-panel.active{display:block;}
 .dm-panel h3{font-family:'Orbitron',sans-serif;color:var(--dm-acc2);margin-bottom:1rem;font-size:1.1rem;letter-spacing:.08em;}
@@ -699,14 +707,13 @@ body::after{content:'';position:fixed;inset:0;z-index:99998;pointer-events:none;
 .dm-row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
 
 /* Typing test */
-#typ-pass{background:#08080f;border:1px solid var(--dm-border);border-radius:8px;padding:.85rem 1rem;font-size:.85rem;line-height:1.6;margin-bottom:.6rem;font-family:monospace;max-width:560px;}
+#typ-pass{background:#08080f;border:1px solid var(--dm-border);border-radius:8px;padding:1rem 1.2rem;font-size:.9rem;line-height:1.7;margin-bottom:.6rem;font-family:monospace;}
 #typ-pass span.ok{color:#64c878;}
 #typ-pass span.bad{color:#e05555;text-decoration:underline;}
-#typ-in{max-width:560px;}
-.typ-stats{display:flex;gap:.6rem;margin-top:.7rem;max-width:560px;}
-.typ-stat{flex:1;text-align:center;background:var(--dm-panel);border:1px solid var(--dm-border);border-radius:8px;padding:.5rem;}
-.typ-stat b{display:block;font-family:'Orbitron',sans-serif;color:var(--dm-acc2);font-size:1.1rem;}
-.typ-stat span{font-size:.6rem;color:#7c7c96;letter-spacing:.1em;text-transform:uppercase;}
+.typ-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-top:.8rem;}
+.typ-stat{text-align:center;background:var(--dm-panel);border:1px solid var(--dm-border);border-radius:8px;padding:1rem .5rem;}
+.typ-stat b{display:block;font-family:'Orbitron',sans-serif;color:var(--dm-acc2);font-size:1.6rem;}
+.typ-stat span{font-size:.65rem;color:#7c7c96;letter-spacing:.1em;text-transform:uppercase;}
 
 /* QR */
 #qr-out{display:flex;flex-direction:column;align-items:center;gap:.8rem;margin-top:1rem;}
@@ -732,7 +739,7 @@ body::after{content:'';position:fixed;inset:0;z-index:99998;pointer-events:none;
   .dm-grid{grid-template-columns:1fr;}
   .dm-content{padding:1rem;}
   #term-out{height:240px;}
-  .typ-stats{flex-wrap:wrap;}
+  .typ-stats{grid-template-columns:repeat(2,1fr);}
 }
 
 </style>
@@ -1771,11 +1778,29 @@ if (!isTouchDevice) {
   </div>
   <div class="dm-body">
     <div class="dm-sidebar">
+      <div class="dm-search"><i class="fas fa-search"></i><input id="dm-search" placeholder="Search tools..." oninput="dmFilterTabs(this.value)"/></div>
       <button class="dm-tab active" data-tab="terminal" onclick="dmTab('terminal')"><i class="fas fa-terminal"></i> Terminal</button>
+
+      <div class="dm-group-label">Portfolio Tools</div>
       <button class="dm-tab" data-tab="cv" onclick="dmTab('cv')"><i class="fas fa-file-alt"></i> CV Builder</button>
-      <button class="dm-tab" data-tab="typing" onclick="dmTab('typing')"><i class="fas fa-keyboard"></i> Typing Test</button>
+      <button class="dm-tab" data-tab="resume" onclick="dmTab('resume')"><i class="fas fa-id-card"></i> Resume Builder</button>
       <button class="dm-tab" data-tab="cover" onclick="dmTab('cover')"><i class="fas fa-envelope-open-text"></i> Cover Letter</button>
+      <button class="dm-tab" data-tab="typing" onclick="dmTab('typing')"><i class="fas fa-keyboard"></i> Typing Test</button>
+
+      <div class="dm-group-label">AI &amp; Utilities</div>
+      <button class="dm-tab" data-tab="ai" onclick="dmTab('ai')"><i class="fas fa-robot"></i> AI Assistant</button>
+      <button class="dm-tab" data-tab="url" onclick="dmTab('url')"><i class="fas fa-link"></i> URL Shortener</button>
+      <button class="dm-tab" data-tab="age" onclick="dmTab('age')"><i class="fas fa-birthday-cake"></i> Age Calculator</button>
+      <button class="dm-tab" data-tab="sci" onclick="dmTab('sci')"><i class="fas fa-calculator"></i> Scientific Calc</button>
+      <button class="dm-tab" data-tab="pwd" onclick="dmTab('pwd')"><i class="fas fa-key"></i> Password Generator</button>
       <button class="dm-tab" data-tab="qr" onclick="dmTab('qr')"><i class="fas fa-qrcode"></i> QR Generator</button>
+
+      <div class="dm-group-label">File &amp; PDF Tools</div>
+      <button class="dm-tab" data-tab="word2pdf" onclick="dmTab('word2pdf')"><i class="fas fa-file-word"></i> Word ⇄ PDF</button>
+      <button class="dm-tab" data-tab="pdfmerge" onclick="dmTab('pdfmerge')"><i class="fas fa-object-group"></i> PDF Merger</button>
+      <button class="dm-tab" data-tab="imgcompress" onclick="dmTab('imgcompress')"><i class="fas fa-compress-arrows-alt"></i> Image Compressor</button>
+
+      <div class="dm-group-label">Dev Tools</div>
       <button class="dm-tab" data-tab="api" onclick="dmTab('api')"><i class="fas fa-network-wired"></i> API Playground</button>
       <button class="dm-tab" data-tab="about" onclick="dmTab('about')"><i class="fas fa-user-circle"></i> About</button>
       <div class="dm-side-foot">ESC to close<br/><span id="dm-clock">--:--:-- --</span></div>
@@ -1832,49 +1857,226 @@ C++ Project (In Progress) — OOP & DSA focus</textarea></div>
 Git & GitHub Fundamentals — Online Course</textarea></div>
           <div class="dm-full"><label>Languages (comma separated)</label><textarea rows="1" id="cvLangs">Nepali (Native), English (Professional Working), Hindi (Fluent)</textarea></div>
         </div>
-        <button class="dm-btn" onclick="dmBuildCV()"><i class="fas fa-download"></i> Generate & Download CV</button>
+        <div class="dm-row">
+          <button class="dm-btn" onclick="dmBuildCV('txt')"><i class="fas fa-file-alt"></i> Download .txt</button>
+          <button class="dm-btn outline" onclick="dmBuildCV('html')"><i class="fas fa-file-code"></i> Download .html</button>
+          <button class="dm-btn outline" onclick="dmBuildCV('img')"><i class="fas fa-file-image"></i> Download .png</button>
+        </div>
       </div>
 
       <!-- TYPING TEST -->
       <div class="dm-panel" id="dm-typing">
-        <h3>Typing Speed Test</h3>
+        <h3><i class="fas fa-desktop"></i> Typing Speed Test</h3>
+        <div class="dm-row" style="justify-content:space-between;margin-bottom:.6rem;">
+          <span style="font-size:.75rem;color:#7c7c96;">Timer starts on first keystroke.</span>
+          <button class="dm-btn outline" onclick="dmTypingReset()"><i class="fas fa-redo"></i> New passage</button>
+        </div>
         <div id="typ-pass"></div>
         <input id="typ-in" class="dm-full" style="width:100%" placeholder="Start typing here..." autocomplete="off"/>
         <div class="typ-stats">
           <div class="typ-stat"><b id="typ-wpm">0</b><span>WPM</span></div>
           <div class="typ-stat"><b id="typ-acc">100%</b><span>Accuracy</span></div>
+          <div class="typ-stat"><b id="typ-time">0s</b><span>Time</span></div>
           <div class="typ-stat"><b id="typ-err">0</b><span>Errors</span></div>
         </div>
-        <div class="dm-row" style="margin-top:.8rem;"><button class="dm-btn outline" onclick="dmTypingReset()"><i class="fas fa-redo"></i> Restart</button></div>
       </div>
 
       <!-- COVER LETTER -->
       <div class="dm-panel" id="dm-cover">
-        <h3>Cover Letter Generator</h3>
-        <div class="dm-grid" style="margin-bottom:.8rem;">
-          <div><label>Job Title</label><input id="clJob" placeholder="e.g. Junior C++ Developer"/></div>
-          <div><label>Company Name</label><input id="clCo" placeholder="e.g. Tech Solutions Pvt. Ltd."/></div>
+        <h3><i class="fas fa-envelope"></i> Cover Letter Generator</h3>
+        <div class="dm-grid">
+          <div><label>Company Name *</label><input id="clCo" placeholder="e.g. Google, F1Soft, Deerwalk..."/></div>
+          <div><label>Role / Position *</label><input id="clJob" placeholder="e.g. Junior Software Engineer..."/></div>
         </div>
-        <button class="dm-btn" onclick="dmGenCover()"><i class="fas fa-magic"></i> Generate</button>
-        <div class="dm-full" style="margin-top:.8rem;"><textarea rows="14" id="clOut" placeholder="Your cover letter will appear here..."></textarea></div>
+        <div class="dm-full" style="margin-top:.8rem;"><label>Why this company? (optional)</label><textarea rows="3" id="clWhy" placeholder="What excites you about this opportunity?"></textarea></div>
+        <div class="dm-full"><label>Skill / project to highlight (optional)</label><input id="clSkill" placeholder="e.g. my Snake Game in C++..."/></div>
+        <div class="dm-full"><label>Tone</label>
+          <select id="clTone">
+            <option>Professional & Formal</option>
+            <option>Friendly & Enthusiastic</option>
+            <option>Confident & Direct</option>
+          </select>
+        </div>
+        <button class="dm-btn" onclick="dmGenCover()"><i class="fas fa-layer-group"></i> Generate Cover Letter</button>
+        <div class="dm-full" style="margin-top:1rem;"><textarea rows="12" id="clOut" placeholder="Your cover letter will appear here..."></textarea></div>
         <div class="dm-row">
           <button class="dm-btn outline" onclick="dmCopyCover()"><i class="fas fa-copy"></i> Copy</button>
-          <button class="dm-btn outline" onclick="dmDownloadCover()"><i class="fas fa-download"></i> Download</button>
+          <button class="dm-btn outline" onclick="dmDownloadCover()"><i class="fas fa-download"></i> Download .txt</button>
         </div>
       </div>
 
       <!-- QR -->
       <div class="dm-panel" id="dm-qr">
-        <h3>QR Code Generator</h3>
-        <div class="dm-full"><label>Text / URL / Contact</label><input id="qrText" placeholder="https://example.com"/></div>
+        <h3><i class="fas fa-qrcode"></i> QR Code Generator</h3>
+        <p style="color:#7c7c96;font-size:.78rem;margin-bottom:.8rem;">Generate a QR code for any URL, text, or contact info.</p>
+        <div class="dm-full"><label>Content</label><textarea rows="2" id="qrText" placeholder="https://example.com"></textarea></div>
         <div class="dm-grid">
-          <div><label>Foreground</label><input type="color" id="qrFg" value="#06060f"/></div>
-          <div><label>Background</label><input type="color" id="qrBg" value="#ffffff"/></div>
-          <div><label>Size (px)</label><input type="number" id="qrSize" value="240" min="100" max="600"/></div>
+          <div><label>Foreground Color</label><input type="color" id="qrFg" value="#a78bfa" style="height:42px;"/></div>
+          <div><label>Background Color</label><input type="color" id="qrBg" value="#ffffff" style="height:42px;"/></div>
         </div>
-        <button class="dm-btn" style="margin-top:.8rem;" onclick="dmGenQR()"><i class="fas fa-qrcode"></i> Generate</button>
+        <div class="dm-grid" style="margin-top:.8rem;">
+          <div><label>Size (px)</label>
+            <select id="qrSize">
+              <option value="200">200 × 200</option>
+              <option value="300" selected>300 × 300</option>
+              <option value="400">400 × 400</option>
+              <option value="500">500 × 500</option>
+            </select>
+          </div>
+          <div><label>Error Correction</label>
+            <select id="qrEcc">
+              <option value="L">L — Low (7%)</option>
+              <option value="M" selected>M — Medium (15%)</option>
+              <option value="Q">Q — Quartile (25%)</option>
+              <option value="H">H — High (30%)</option>
+            </select>
+          </div>
+        </div>
+        <button class="dm-btn" style="margin-top:1rem;" onclick="dmGenQR()"><i class="fas fa-th"></i> Generate QR Code</button>
         <div id="qr-out"></div>
       </div>
+
+      <!-- RESUME BUILDER -->
+      <div class="dm-panel" id="dm-resume">
+        <h3><i class="fas fa-id-card"></i> Resume Builder</h3>
+        <p style="color:#7c7c96;font-size:.78rem;margin-bottom:.8rem;">Build a clean one-page resume and export it as a polished HTML/PDF-ready file.</p>
+        <div class="dm-card">
+          <div class="dm-grid">
+            <div><label>Full Name</label><input id="rsName" value="Shloka Dahal"/></div>
+            <div><label>Title</label><input id="rsTitle" value="Computer Engineering Student"/></div>
+            <div><label>Email</label><input id="rsEmail" value="shlokadahal@gmail.com"/></div>
+            <div><label>Phone</label><input id="rsPhone" value="+977-XXXXXXXXXX"/></div>
+            <div><label>Location</label><input id="rsLoc" value="Bhaktapur, Nepal"/></div>
+            <div><label>Website / GitHub</label><input id="rsWeb" value="github.com/Shlokadahal-cpu"/></div>
+          </div>
+        </div>
+        <div class="dm-card">
+          <div class="dm-full"><label>Objective / Summary</label><textarea rows="3" id="rsObj">Driven Computer Engineering student seeking opportunities to apply C/C++ and web development skills in a professional environment.</textarea></div>
+          <div class="dm-full"><label>Experience (one per line: Title — Organization — Duration)</label><textarea rows="3" id="rsExp">Freelance Web Developer — Self-employed — 2025–Present</textarea></div>
+          <div class="dm-full"><label>Education (one per line)</label><textarea rows="2" id="rsEdu">B.E. Computer Engineering — Himalaya College of Engineering (2025–Present)</textarea></div>
+          <div class="dm-full"><label>Skills (comma separated)</label><textarea rows="2" id="rsSkills">C, C++, JavaScript, HTML, CSS, Git</textarea></div>
+        </div>
+        <div class="dm-row">
+          <button class="dm-btn" onclick="dmBuildResume('html')"><i class="fas fa-file-code"></i> Download .html</button>
+          <button class="dm-btn outline" onclick="dmBuildResume('pdf')"><i class="fas fa-file-pdf"></i> Download .pdf</button>
+        </div>
+      </div>
+
+      <!-- AI ASSISTANT -->
+      <div class="dm-panel" id="dm-ai">
+        <h3><i class="fas fa-robot"></i> AI Chat Assistant</h3>
+        <p style="color:#7c7c96;font-size:.78rem;margin-bottom:.8rem;">Ask about Shloka's skills, projects, or general questions. Powered by Claude.</p>
+        <div id="ai-out" style="background:#08080f;border:1px solid var(--dm-border);border-radius:10px;padding:1rem;height:340px;overflow-y:auto;font-size:.85rem;line-height:1.6;margin-bottom:.6rem;"></div>
+        <div class="term-in-row">
+          <span><i class="fas fa-comment-dots"></i></span>
+          <input id="ai-in" autocomplete="off" placeholder="Ask me anything..."/>
+          <button class="dm-btn" style="padding:.5rem .9rem;" onclick="dmAiSend()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+
+      <!-- URL SHORTENER -->
+      <div class="dm-panel" id="dm-url">
+        <h3><i class="fas fa-link"></i> URL Shortener</h3>
+        <p style="color:#7c7c96;font-size:.78rem;margin-bottom:.8rem;">Shorten long URLs using the free is.gd service.</p>
+        <div class="dm-full"><label>Long URL</label><input id="urlInput" placeholder="https://example.com/very/long/path"/></div>
+        <button class="dm-btn" onclick="dmShortenUrl()"><i class="fas fa-compress"></i> Shorten</button>
+        <div class="dm-card" id="url-result" style="margin-top:1rem;display:none;">
+          <label style="display:block;margin-bottom:.4rem;">Shortened URL</label>
+          <div class="dm-row">
+            <input id="url-out" readonly style="flex:1;"/>
+            <button class="dm-btn outline" onclick="dmCopyShort()"><i class="fas fa-copy"></i> Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- AGE CALCULATOR -->
+      <div class="dm-panel" id="dm-age">
+        <h3><i class="fas fa-birthday-cake"></i> Age Calculator</h3>
+        <div class="dm-row" style="margin-bottom:.8rem;">
+          <button class="dm-btn outline active-toggle" id="ageEngBtn" onclick="dmAgeMode('en')">English (AD)</button>
+          <button class="dm-btn outline" id="ageNepBtn" onclick="dmAgeMode('np')">Nepali (BS)</button>
+        </div>
+        <div id="age-en-panel">
+          <div class="dm-full"><label>Date of Birth (AD)</label><input type="date" id="ageDateEn"/></div>
+        </div>
+        <div id="age-np-panel" style="display:none;">
+          <div class="dm-grid">
+            <div><label>Year (BS)</label><input type="number" id="ageYearNp" placeholder="2060"/></div>
+            <div><label>Month (BS, 1-12)</label><input type="number" id="ageMonthNp" placeholder="1" min="1" max="12"/></div>
+          </div>
+          <div class="dm-full"><label>Day (BS, 1-32)</label><input type="number" id="ageDayNp" placeholder="1" min="1" max="32"/></div>
+          <p style="color:#5a5a72;font-size:.7rem;">Approximate conversion (BS ≈ AD + 56-57 years).</p>
+        </div>
+        <button class="dm-btn" onclick="dmCalcAge()"><i class="fas fa-calculator"></i> Calculate Age</button>
+        <div class="dm-card" id="age-result" style="margin-top:1rem;display:none;"></div>
+      </div>
+
+      <!-- SCIENTIFIC CALCULATOR -->
+      <div class="dm-panel" id="dm-sci">
+        <h3><i class="fas fa-calculator"></i> Scientific Calculator</h3>
+        <div class="dm-card" style="max-width:380px;">
+          <input id="sciDisplay" readonly style="width:100%;font-size:1.4rem;text-align:right;padding:.8rem;margin-bottom:.6rem;font-family:'Orbitron',sans-serif;background:#08080f;border:1px solid var(--dm-border);border-radius:8px;color:#e8e6f5;"/>
+          <div id="sci-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem;"></div>
+        </div>
+      </div>
+
+      <!-- PASSWORD GENERATOR -->
+      <div class="dm-panel" id="dm-pwd">
+        <h3><i class="fas fa-key"></i> Password Generator</h3>
+        <div class="dm-full"><label>Length: <span id="pwdLenVal">16</span></label><input type="range" id="pwdLen" min="6" max="64" value="16" oninput="document.getElementById('pwdLenVal').textContent=this.value"/></div>
+        <div class="dm-grid">
+          <div class="dm-row"><input type="checkbox" id="pwdUpper" checked style="width:auto;"/> <label style="margin:0;">Uppercase (A-Z)</label></div>
+          <div class="dm-row"><input type="checkbox" id="pwdLower" checked style="width:auto;"/> <label style="margin:0;">Lowercase (a-z)</label></div>
+          <div class="dm-row"><input type="checkbox" id="pwdNum" checked style="width:auto;"/> <label style="margin:0;">Numbers (0-9)</label></div>
+          <div class="dm-row"><input type="checkbox" id="pwdSym" checked style="width:auto;"/> <label style="margin:0;">Symbols (!@#$)</label></div>
+        </div>
+        <button class="dm-btn" style="margin-top:1rem;" onclick="dmGenPwd()"><i class="fas fa-sync"></i> Generate Password</button>
+        <div class="dm-card" style="margin-top:1rem;">
+          <div class="dm-row">
+            <input id="pwd-out" readonly style="flex:1;font-family:monospace;font-size:1rem;"/>
+            <button class="dm-btn outline" onclick="dmCopyPwd()"><i class="fas fa-copy"></i> Copy</button>
+          </div>
+          <div style="margin-top:.6rem;font-size:.75rem;color:#7c7c96;">Strength: <b id="pwd-strength" style="color:var(--dm-acc2);">—</b></div>
+        </div>
+      </div>
+
+      <!-- WORD <-> PDF -->
+      <div class="dm-panel" id="dm-word2pdf">
+        <h3><i class="fas fa-file-word"></i> Word ⇄ PDF Converter</h3>
+        <div class="dm-card">
+          <strong style="color:var(--dm-acc2);font-size:.85rem;">Word (.docx) → PDF</strong>
+          <div class="dm-full" style="margin-top:.6rem;"><input type="file" id="w2pFile" accept=".docx"/></div>
+          <button class="dm-btn" onclick="dmWordToPdf()"><i class="fas fa-file-pdf"></i> Convert to PDF</button>
+          <div id="w2p-status" style="margin-top:.6rem;font-size:.78rem;color:#7c7c96;"></div>
+        </div>
+        <div class="dm-card">
+          <strong style="color:var(--dm-acc2);font-size:.85rem;">PDF → Word (.html)</strong>
+          <div class="dm-full" style="margin-top:.6rem;"><input type="file" id="p2wFile" accept=".pdf"/></div>
+          <button class="dm-btn" onclick="dmPdfToWord()"><i class="fas fa-file-word"></i> Convert to Word</button>
+          <div id="p2w-status" style="margin-top:.6rem;font-size:.78rem;color:#7c7c96;"></div>
+          <p style="color:#5a5a72;font-size:.68rem;margin-top:.4rem;">Extracts text content and exports as an editable .doc file.</p>
+        </div>
+      </div>
+
+      <!-- PDF MERGER -->
+      <div class="dm-panel" id="dm-pdfmerge">
+        <h3><i class="fas fa-object-group"></i> PDF Merger</h3>
+        <p style="color:#7c7c96;font-size:.78rem;margin-bottom:.8rem;">Select multiple PDF files to merge into one document, in order.</p>
+        <div class="dm-full"><input type="file" id="pdfMergeFiles" accept=".pdf" multiple/></div>
+        <div id="pdfmerge-list" style="margin:.6rem 0;font-size:.78rem;color:#a78bfa;"></div>
+        <button class="dm-btn" onclick="dmMergePdfs()"><i class="fas fa-layer-group"></i> Merge PDFs</button>
+        <div id="pdfmerge-status" style="margin-top:.6rem;font-size:.78rem;color:#7c7c96;"></div>
+      </div>
+
+      <!-- IMAGE COMPRESSOR -->
+      <div class="dm-panel" id="dm-imgcompress">
+        <h3><i class="fas fa-compress-arrows-alt"></i> Image Compressor</h3>
+        <div class="dm-full"><input type="file" id="imgCompFile" accept="image/*"/></div>
+        <div class="dm-full"><label>Quality: <span id="imgQualVal">70</span>%</label><input type="range" id="imgQual" min="10" max="100" value="70" oninput="document.getElementById('imgQualVal').textContent=this.value"/></div>
+        <button class="dm-btn" onclick="dmCompressImg()"><i class="fas fa-compress"></i> Compress Image</button>
+        <div id="imgcomp-result" style="margin-top:1rem;"></div>
+      </div>
+
 
       <!-- API PLAYGROUND -->
       <div class="dm-panel" id="dm-api">
@@ -1932,6 +2134,10 @@ Git & GitHub Fundamentals — Online Course</textarea></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 // ══ DEV MODE LOGIC ══
 function toggleDev(){
@@ -1950,6 +2156,27 @@ function dmTab(name){
   document.querySelectorAll('.dm-panel').forEach(function(p){p.classList.toggle('active', p.id==='dm-'+name);});
   if(name==='typing') dmTypingInit();
 }
+function dmFilterTabs(q){
+  q=q.trim().toLowerCase();
+  var sidebar=document.querySelector('.dm-sidebar');
+  var children=Array.prototype.slice.call(sidebar.children);
+  children.forEach(function(el){
+    if(el.classList.contains('dm-tab')){
+      var match=!q || el.textContent.toLowerCase().indexOf(q)!==-1;
+      el.classList.toggle('hidden', !match);
+    }
+  });
+  // hide group labels with no visible tabs after them
+  var groups=sidebar.querySelectorAll('.dm-group-label');
+  groups.forEach(function(g){
+    var sib=g.nextElementSibling, anyVisible=false;
+    while(sib && !sib.classList.contains('dm-group-label') && !sib.classList.contains('dm-side-foot')){
+      if(!sib.classList.contains('hidden')) anyVisible=true;
+      sib=sib.nextElementSibling;
+    }
+    g.classList.toggle('hidden', q && !anyVisible);
+  });
+}
 
 // — TERMINAL —
 var termOut = null, termIn = null, termBusy = false;
@@ -1957,118 +2184,165 @@ function termPrint(html, cls){
   var d=document.createElement('div'); d.className='tline'+(cls?' '+cls:''); d.innerHTML=html; termOut.appendChild(d); termOut.scrollTop=termOut.scrollHeight;
   return d;
 }
-// types out plain text into a line, char by char
-function termType(text, cls, speed, cb){
-  var d=document.createElement('div'); d.className='tline'+(cls?' '+cls:''); termOut.appendChild(d);
-  var i=0;
-  function step(){
-    d.textContent=text.slice(0,i);
-    if(i<text.length){ i++; termOut.scrollTop=termOut.scrollHeight; setTimeout(step,speed||14); }
-    else if(cb) cb();
-  }
-  step();
-}
-function termTypeMulti(lines, cb, speed){
-  var idx=0;
-  function next(){
-    if(idx>=lines.length){ if(cb) cb(); return; }
-    termType(lines[idx], '', speed, function(){ idx++; next(); });
-  }
-  next();
-}
 function termInit(){
   termOut=document.getElementById('term-out'); termIn=document.getElementById('term-in');
-  termPrint('<span class="tcmd">Dikshant\'s Dev Mode — v2.0</span>'.replace('Dikshant','Shloka'));
+  termPrint('<span class="tcmd">Shloka\'s Dev Mode — v2.0</span>');
   termPrint('<span class="tmuted">Use the sidebar tabs or quick buttons below.</span>');
   termPrint('<span class="tmuted">Type <span class="tcmd">help</span> for commands.</span>');
-  termPrint('<span class="tprompt">&gt;</span> <span class="tmuted">type a command and press Enter...</span>');
   termIn.addEventListener('keydown', function(e){
     if(e.key==='Enter'){
       if(termBusy) return;
-      var cmd=termIn.value.trim(); termIn.value='';
+      var cmd=termIn.value.trim();
       if(!cmd) return;
       termPrint('<span class="tprompt">&gt;</span> '+cmd);
+      termIn.value='';
       termRun(cmd.toLowerCase());
     }
   });
 }
+// types text directly into the input field, then commits it to history
+function termTypeIntoInput(text, cb, speed){
+  termBusy=true; termIn.disabled=true; termIn.placeholder='';
+  var i=0;
+  function step(){
+    termIn.value=text.slice(0,i);
+    if(i<text.length){ i++; setTimeout(step,speed||14); }
+    else {
+      setTimeout(function(){
+        termPrint('<span class="tprompt">&gt;</span> '+text);
+        termIn.value=''; termIn.disabled=false; termIn.placeholder='type a command and press Enter...';
+        termBusy=false; termIn.focus();
+        if(cb) cb();
+      }, 250);
+    }
+  }
+  step();
+}
+function termTypeMultiInput(lines, idx, speed){
+  if(idx>=lines.length) return;
+  termTypeIntoInput(lines[idx], function(){ termTypeMultiInput(lines, idx+1, speed); }, speed);
+}
 function termRun(cmd){
-  termBusy=true; termIn.disabled=true;
-  function done(){ termBusy=false; termIn.disabled=false; termIn.focus(); }
   switch(cmd){
     case 'help':
-      termTypeMulti([
-        'Available commands:',
-        '  help      Show this list of commands',
-        '  about     Short intro about me',
-        '  skills    List of technical skills',
-        '  projects  Show current projects',
-        '  contact   Contact information',
-        '  whoami    Who am I?',
-        '  date      Show current date & time',
-        '  clear     Clear the terminal'
-      ], done, 8);
+      termTypeMultiInput([
+        'Available: about, skills, projects, contact, whoami, date, clear'
+      ], 0, 10);
       break;
     case 'about':
-      termTypeMulti(['Shloka Dahal — Computer Engineering student passionate','about C/C++ and web development. Building the future,','one line of code at a time.'], done, 10);
+      termTypeMultiInput(['I am a Computer Engineering student passionate about C/C++ and web development.'], 0, 10);
       break;
     case 'skills':
-      termTypeMulti(['C, C++, HTML5, CSS3, JavaScript','Git, GitHub, OOP, Data Structures & Algorithms'], done, 10);
+      termTypeMultiInput(['C, C++, HTML5, CSS3, JavaScript, Git, GitHub, OOP, Data Structures & Algorithms'], 0, 10);
       break;
     case 'projects':
-      termTypeMulti(['1. C Programming Project — github.com/Shlokadahal/cprogram','2. Personal Portfolio Website — HTML, CSS, JS','3. C++ Project (In Progress) — OOP & DSA'], done, 8);
+      termTypeMultiInput(['C Programming Project, Personal Portfolio Website, C++ Project (In Progress)'], 0, 10);
       break;
     case 'contact':
-      termTypeMulti(['Email   : shlokadahal@gmail.com','GitHub  : github.com/Shlokadahal-cpu','Location: Bhaktapur, Nepal'], done, 10);
+      termTypeMultiInput(['shlokadahal@gmail.com | github.com/Shlokadahal-cpu | Bhaktapur, Nepal'], 0, 10);
       break;
     case 'whoami':
-      termType('shloka — Computer Engineering Student & Developer', '', 12, done);
+      termTypeMultiInput(['shloka — Computer Engineering Student & Developer'], 0, 12);
       break;
     case 'date':
-      termType(new Date().toString(), '', 8, done);
+      termTypeMultiInput([new Date().toString()], 0, 8);
       break;
     case 'clear':
-      termOut.innerHTML=''; done(); break;
+      termOut.innerHTML=''; break;
     default:
-      termType('Command not found: '+cmd+'. Type "help" for a list.', '', 12, done);
+      termTypeMultiInput(['Command not found: '+cmd+'. Type "help" for a list.'], 0, 12);
   }
 }
 
 // — CV BUILDER —
-function dmBuildCV(){
-  var name=document.getElementById('cvName').value||'—';
-  var role=document.getElementById('cvRole').value||'—';
-  var email=document.getElementById('cvEmail').value||'—';
-  var phone=document.getElementById('cvPhone').value||'—';
-  var loc=document.getElementById('cvLoc').value||'—';
-  var git=document.getElementById('cvGit').value||'—';
-  var linkedin=document.getElementById('cvLinkedin').value||'—';
-  var web=document.getElementById('cvWeb').value||'—';
-  var summary=document.getElementById('cvSummary').value||'';
-  var edu=document.getElementById('cvEdu').value.split('\n').filter(Boolean);
-  var skills=document.getElementById('cvSkills').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
-  var proj=document.getElementById('cvProj').value.split('\n').filter(Boolean);
-  var certs=document.getElementById('cvCerts').value.split('\n').filter(Boolean);
-  var langs=document.getElementById('cvLangs').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
+function dmGetCVData(){
+  return {
+    name:document.getElementById('cvName').value||'—',
+    role:document.getElementById('cvRole').value||'—',
+    email:document.getElementById('cvEmail').value||'—',
+    phone:document.getElementById('cvPhone').value||'—',
+    loc:document.getElementById('cvLoc').value||'—',
+    git:document.getElementById('cvGit').value||'—',
+    linkedin:document.getElementById('cvLinkedin').value||'—',
+    web:document.getElementById('cvWeb').value||'—',
+    summary:document.getElementById('cvSummary').value||'',
+    edu:document.getElementById('cvEdu').value.split('\n').filter(Boolean),
+    skills:document.getElementById('cvSkills').value.split(',').map(function(s){return s.trim();}).filter(Boolean),
+    proj:document.getElementById('cvProj').value.split('\n').filter(Boolean),
+    certs:document.getElementById('cvCerts').value.split('\n').filter(Boolean),
+    langs:document.getElementById('cvLangs').value.split(',').map(function(s){return s.trim();}).filter(Boolean)
+  };
+}
+function dmCVTextContent(d){
   var lines=[
-    'CURRICULUM VITAE','='.repeat(50),name.toUpperCase(),role,'='.repeat(50),'',
+    'CURRICULUM VITAE','='.repeat(50),d.name.toUpperCase(),d.role,'='.repeat(50),'',
     'CONTACT','-'.repeat(35),
-    'Email    : '+email,'Phone    : '+phone,'Location : '+loc,
-    'GitHub   : '+git,'LinkedIn : '+linkedin,'Portfolio: '+web,''
+    'Email    : '+d.email,'Phone    : '+d.phone,'Location : '+d.loc,
+    'GitHub   : '+d.git,'LinkedIn : '+d.linkedin,'Portfolio: '+d.web,''
   ];
-  if(summary){ lines.push('PROFESSIONAL SUMMARY','-'.repeat(35),summary,''); }
+  if(d.summary){ lines.push('PROFESSIONAL SUMMARY','-'.repeat(35),d.summary,''); }
   lines.push('EDUCATION','-'.repeat(35));
-  edu.forEach(function(e){lines.push('- '+e);});
+  d.edu.forEach(function(e){lines.push('- '+e);});
   lines.push('','SKILLS','-'.repeat(35));
-  skills.forEach(function(s){lines.push('- '+s);});
+  d.skills.forEach(function(s){lines.push('- '+s);});
   lines.push('','PROJECTS','-'.repeat(35));
-  proj.forEach(function(p){lines.push('- '+p);});
-  if(certs.length){ lines.push('','CERTIFICATIONS','-'.repeat(35)); certs.forEach(function(c){lines.push('- '+c);}); }
-  if(langs.length){ lines.push('','LANGUAGES','-'.repeat(35)); langs.forEach(function(l){lines.push('- '+l);}); }
+  d.proj.forEach(function(p){lines.push('- '+p);});
+  if(d.certs.length){ lines.push('','CERTIFICATIONS','-'.repeat(35)); d.certs.forEach(function(c){lines.push('- '+c);}); }
+  if(d.langs.length){ lines.push('','LANGUAGES','-'.repeat(35)); d.langs.forEach(function(l){lines.push('- '+l);}); }
   lines.push('','='.repeat(50),'Generated: '+new Date().toLocaleDateString(),'='.repeat(50));
-  var blob=new Blob([lines.join('\n')],{type:'text/plain'});
-  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name.replace(/\s+/g,'_')+'_CV.txt';
+  return lines.join('\n');
+}
+function dmCVHtmlContent(d){
+  function li(arr){ return arr.map(function(x){return '<li>'+x.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</li>';}).join(''); }
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+d.name+' - CV</title><style>'+
+  'body{font-family:Georgia,serif;max-width:760px;margin:40px auto;padding:0 30px;color:#222;}'+
+  'h1{font-size:28px;margin-bottom:2px;color:#7c5fd6;}'+
+  '.role{color:#555;margin-bottom:14px;font-size:15px;}'+
+  '.contact{font-size:13px;color:#555;margin-bottom:20px;border-bottom:2px solid #a78bfa;padding-bottom:14px;}'+
+  'h2{font-size:16px;text-transform:uppercase;letter-spacing:1px;color:#7c5fd6;border-bottom:1px solid #ddd;padding-bottom:4px;margin-top:24px;}'+
+  'ul{margin:8px 0 0 18px;padding:0;font-size:14px;line-height:1.7;}'+
+  'p.summary{font-size:14px;line-height:1.7;color:#333;}'+
+  '</style></head><body>'+
+  '<h1>'+d.name+'</h1><div class="role">'+d.role+'</div>'+
+  '<div class="contact">'+d.email+' &nbsp;|&nbsp; '+d.phone+' &nbsp;|&nbsp; '+d.loc+'<br>'+d.git+' &nbsp;|&nbsp; '+d.linkedin+' &nbsp;|&nbsp; '+d.web+'</div>'+
+  (d.summary?'<h2>Professional Summary</h2><p class="summary">'+d.summary+'</p>':'')+
+  '<h2>Education</h2><ul>'+li(d.edu)+'</ul>'+
+  '<h2>Skills</h2><ul>'+li(d.skills)+'</ul>'+
+  '<h2>Projects</h2><ul>'+li(d.proj)+'</ul>'+
+  (d.certs.length?'<h2>Certifications</h2><ul>'+li(d.certs)+'</ul>':'')+
+  (d.langs.length?'<h2>Languages</h2><ul>'+li(d.langs)+'</ul>':'')+
+  '</body></html>';
+}
+function dmDownloadBlob(content, type, filename){
+  var blob=new Blob([content],{type:type});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename;
   document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(a.href);
+}
+function dmBuildCV(format){
+  var d=dmGetCVData();
+  var base=d.name.replace(/\s+/g,'_');
+  if(format==='txt'){
+    dmDownloadBlob(dmCVTextContent(d),'text/plain',base+'_CV.txt');
+  } else if(format==='html'){
+    dmDownloadBlob(dmCVHtmlContent(d),'text/html',base+'_CV.html');
+  } else if(format==='img'){
+    // render CV to a canvas and export as PNG
+    var w=900, lineH=24, x=50, y=60;
+    var canvas=document.createElement('canvas'); canvas.width=w;
+    var ctx=canvas.getContext('2d');
+    var lines=dmCVTextContent(d).split('\n');
+    var h=lines.length*lineH+100;
+    canvas.height=h;
+    ctx.fillStyle='#0d0d1a'; ctx.fillRect(0,0,w,h);
+    ctx.font='14px monospace'; ctx.fillStyle='#e8e6f5';
+    lines.forEach(function(line){
+      if(/^[A-Z][A-Z \/&]+$/.test(line.trim())){ ctx.fillStyle='#c4b5fd'; ctx.font='bold 14px monospace'; }
+      else { ctx.fillStyle='#e8e6f5'; ctx.font='14px monospace'; }
+      ctx.fillText(line, x, y);
+      y+=lineH;
+    });
+    var a=document.createElement('a'); a.download=base+'_CV.png'; a.href=canvas.toDataURL('image/png'); a.click();
+  }
 }
 
 // — TYPING TEST —
@@ -2076,20 +2350,28 @@ var typPassages=[
   'The quick brown fox jumps over the lazy dog while the sun sets behind the mountains.',
   'Practice makes perfect, and consistent effort every day leads to great improvement over time.',
   'Computer engineering combines hardware design, software development, and problem solving skills.',
+  'An algorithm is a finite sequence of well-defined instructions used to solve a problem. Mastering data structures and algorithms is the key to writing efficient code.',
   'Success is the sum of small efforts repeated day in and day out without losing motivation.'
 ];
 var typState={text:'',start:null,errors:0,timer:null};
 function dmTypingInit(){
   typState.text=typPassages[Math.floor(Math.random()*typPassages.length)];
   typState.start=null; typState.errors=0;
+  if(typState.timer){ clearInterval(typState.timer); typState.timer=null; }
   document.getElementById('typ-in').value='';
   document.getElementById('typ-wpm').textContent='0';
   document.getElementById('typ-acc').textContent='100%';
+  document.getElementById('typ-time').textContent='0s';
   document.getElementById('typ-err').textContent='0';
   renderPassage('');
   var inp=document.getElementById('typ-in');
   inp.oninput=function(){
-    if(!typState.start) typState.start=Date.now();
+    if(!typState.start){
+      typState.start=Date.now();
+      typState.timer=setInterval(function(){
+        document.getElementById('typ-time').textContent=Math.floor((Date.now()-typState.start)/1000)+'s';
+      },500);
+    }
     var val=inp.value;
     renderPassage(val);
     var errors=0;
@@ -2101,6 +2383,7 @@ function dmTypingInit(){
     document.getElementById('typ-wpm').textContent=wpm;
     document.getElementById('typ-acc').textContent=acc+'%';
     document.getElementById('typ-err').textContent=errors;
+    if(val.length>=typState.text.length && typState.timer){ clearInterval(typState.timer); typState.timer=null; }
   };
 }
 function renderPassage(typed){
@@ -2116,13 +2399,35 @@ function dmTypingReset(){ dmTypingInit(); }
 
 // — COVER LETTER —
 function dmGenCover(){
-  var job=document.getElementById('clJob').value||'the position';
-  var co=document.getElementById('clCo').value||'your company';
+  var co=document.getElementById('clCo').value.trim();
+  var job=document.getElementById('clJob').value.trim();
+  var why=document.getElementById('clWhy').value.trim();
+  var skill=document.getElementById('clSkill').value.trim();
+  var tone=document.getElementById('clTone').value;
+  if(!co||!job){ alert('Please enter company name and role.'); return; }
+
+  var opening, body2, closing;
+  if(tone==='Friendly & Enthusiastic'){
+    opening='I\'m excited to apply for the '+job+' position at '+co+'! ';
+    closing='I\'d love the chance to bring my energy and enthusiasm to your team. Thanks so much for considering my application!';
+  } else if(tone==='Confident & Direct'){
+    opening='I am applying for the '+job+' role at '+co+' and I am confident I can make a strong contribution. ';
+    closing='I am ready to bring real value to your team from day one and look forward to discussing this opportunity further.';
+  } else {
+    opening='I am writing to express my interest in the '+job+' position at '+co+'. ';
+    closing='I would welcome the opportunity to discuss how my skills can contribute to '+co+'. Thank you for considering my application.';
+  }
+
   var letter='Dear Hiring Manager,\n\n'+
-  'I am writing to express my interest in the '+job+' role at '+co+'. As a Computer Engineering student with hands-on experience in C, C++, and web development (HTML, CSS, JavaScript), I am eager to bring my problem-solving skills and dedication to your team.\n\n'+
-  'Throughout my academic journey, I have worked on projects ranging from core C/C++ programs to a fully responsive personal portfolio website, strengthening my understanding of data structures, algorithms, and clean code practices. I am a fast learner who thrives in collaborative environments and is committed to continuous improvement.\n\n'+
-  'I would welcome the opportunity to discuss how my skills and enthusiasm can contribute to '+co+'. Thank you for considering my application.\n\n'+
-  'Sincerely,\nShloka Dahal\nshlokadahal@gmail.com';
+  opening+'As a Computer Engineering student with hands-on experience in C, C++, and web development (HTML, CSS, JavaScript), I am eager to bring my problem-solving skills and dedication to your team.\n\n';
+
+  if(why){ letter+=why+'\n\n'; }
+
+  letter+='Throughout my academic journey, I have worked on projects ranging from core C/C++ programs to a fully responsive personal portfolio website, strengthening my understanding of data structures, algorithms, and clean code practices.';
+  if(skill){ letter+=' I would particularly highlight '+skill+', which reflects my practical experience and growth as a developer.'; }
+  letter+=' I am a fast learner who thrives in collaborative environments and is committed to continuous improvement.\n\n';
+
+  letter+=closing+'\n\nSincerely,\nShloka Dahal\nshlokadahal@gmail.com';
   document.getElementById('clOut').value=letter;
 }
 function dmCopyCover(){
@@ -2142,20 +2447,31 @@ function dmGenQR(){
   if(!text){ alert('Enter text or a URL first.'); return; }
   var fg=document.getElementById('qrFg').value;
   var bg=document.getElementById('qrBg').value;
-  var size=parseInt(document.getElementById('qrSize').value)||240;
+  var size=parseInt(document.getElementById('qrSize').value)||300;
+  var eccMap={L:QRCode.CorrectLevel.L,M:QRCode.CorrectLevel.M,Q:QRCode.CorrectLevel.Q,H:QRCode.CorrectLevel.H};
+  var ecc=eccMap[document.getElementById('qrEcc').value]||QRCode.CorrectLevel.M;
   var out=document.getElementById('qr-out');
   out.innerHTML='';
   var holder=document.createElement('div');
   out.appendChild(holder);
-  new QRCode(holder,{text:text,width:size,height:size,colorDark:fg,colorLight:bg,correctLevel:QRCode.CorrectLevel.H});
+  new QRCode(holder,{text:text,width:size,height:size,colorDark:fg,colorLight:bg,correctLevel:ecc});
   setTimeout(function(){
-    var img=holder.querySelector('img')||holder.querySelector('canvas');
+    var row=document.createElement('div'); row.className='dm-row'; row.style.marginTop='.6rem';
     var btnPng=document.createElement('button'); btnPng.className='dm-btn outline'; btnPng.innerHTML='<i class="fas fa-download"></i> Download PNG';
     btnPng.onclick=function(){
       var canvas=holder.querySelector('canvas');
       var a=document.createElement('a'); a.download='qrcode.png'; a.href=canvas.toDataURL('image/png'); a.click();
     };
-    out.appendChild(btnPng);
+    var btnSvg=document.createElement('button'); btnSvg.className='dm-btn outline'; btnSvg.innerHTML='<i class="fas fa-file-code"></i> Download SVG';
+    btnSvg.onclick=function(){
+      var canvas=holder.querySelector('canvas');
+      var dataUrl=canvas.toDataURL('image/png');
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+size+'" height="'+size+'"><image width="'+size+'" height="'+size+'" href="'+dataUrl+'"/></svg>';
+      var blob=new Blob([svg],{type:'image/svg+xml'});
+      var a=document.createElement('a'); a.download='qrcode.svg'; a.href=URL.createObjectURL(blob); a.click(); URL.revokeObjectURL(a.href);
+    };
+    row.appendChild(btnPng); row.appendChild(btnSvg);
+    out.appendChild(row);
   },200);
 }
 
@@ -2190,8 +2506,311 @@ async function dmSendApi(){
   }
 }
 
+// — RESUME BUILDER —
+function dmResumeHtml(){
+  var name=document.getElementById('rsName').value||'—';
+  var title=document.getElementById('rsTitle').value||'';
+  var email=document.getElementById('rsEmail').value||'';
+  var phone=document.getElementById('rsPhone').value||'';
+  var loc=document.getElementById('rsLoc').value||'';
+  var web=document.getElementById('rsWeb').value||'';
+  var obj=document.getElementById('rsObj').value||'';
+  var exp=document.getElementById('rsExp').value.split('\n').filter(Boolean);
+  var edu=document.getElementById('rsEdu').value.split('\n').filter(Boolean);
+  var skills=document.getElementById('rsSkills').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
+  function li(arr){ return arr.map(function(x){return '<li>'+x.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</li>';}).join(''); }
+  return {name:name,html:'<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+name+' - Resume</title><style>'+
+  'body{font-family:Arial,Helvetica,sans-serif;max-width:760px;margin:40px auto;padding:0 30px;color:#222;}'+
+  'h1{font-size:26px;margin-bottom:2px;}'+
+  '.title{color:#7c5fd6;margin-bottom:10px;font-weight:600;}'+
+  '.contact{font-size:13px;color:#555;margin-bottom:18px;border-bottom:3px solid #a78bfa;padding-bottom:12px;}'+
+  'h2{font-size:15px;text-transform:uppercase;letter-spacing:1px;color:#7c5fd6;border-bottom:1px solid #ddd;padding-bottom:4px;margin-top:20px;}'+
+  'ul{margin:8px 0 0 18px;padding:0;font-size:13px;line-height:1.7;}'+
+  'p{font-size:13px;line-height:1.7;}'+
+  '</style></head><body>'+
+  '<h1>'+name+'</h1><div class="title">'+title+'</div>'+
+  '<div class="contact">'+email+' | '+phone+' | '+loc+' | '+web+'</div>'+
+  (obj?'<h2>Objective</h2><p>'+obj+'</p>':'')+
+  (exp.length?'<h2>Experience</h2><ul>'+li(exp)+'</ul>':'')+
+  (edu.length?'<h2>Education</h2><ul>'+li(edu)+'</ul>':'')+
+  (skills.length?'<h2>Skills</h2><ul>'+li(skills)+'</ul>':'')+
+  '</body></html>'};
+}
+function dmBuildResume(format){
+  var r=dmResumeHtml();
+  var base=r.name.replace(/\s+/g,'_');
+  if(format==='html'){
+    dmDownloadBlob(r.html,'text/html',base+'_Resume.html');
+  } else {
+    var win=document.createElement('iframe');
+    win.style.position='fixed'; win.style.left='-9999px';
+    document.body.appendChild(win);
+    win.contentDocument.write(r.html);
+    win.contentDocument.close();
+    setTimeout(function(){
+      var doc=new jspdf.jsPDF({unit:'pt',format:'a4'});
+      doc.html(win.contentDocument.body, {
+        callback: function(d){ d.save(base+'_Resume.pdf'); document.body.removeChild(win); },
+        x:20, y:20, width:550, windowWidth:760
+      });
+    },300);
+  }
+}
+
+// — AI ASSISTANT —
+function dmAiAppend(role, text){
+  var out=document.getElementById('ai-out');
+  var d=document.createElement('div');
+  d.style.marginBottom='.8rem';
+  d.innerHTML='<b style="color:'+(role==='user'?'#e8e6f5':'#c4b5fd')+';">'+(role==='user'?'You':'Assistant')+':</b> <span style="color:#c8c8e0;">'+text+'</span>';
+  out.appendChild(d); out.scrollTop=out.scrollHeight;
+}
+async function dmAiSend(){
+  var inp=document.getElementById('ai-in');
+  var msg=inp.value.trim();
+  if(!msg) return;
+  dmAiAppend('user', msg);
+  inp.value='';
+  dmAiAppend('assistant','<i>Thinking...</i>');
+  var out=document.getElementById('ai-out');
+  try{
+    var resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1000,
+        system:'You are a helpful assistant embedded in Shloka Dahal\'s developer portfolio website. Shloka is a Computer Engineering student skilled in C, C++, HTML, CSS, and JavaScript, based in Bhaktapur, Nepal. Answer questions about Shloka\'s skills/projects helpfully, and also answer general questions concisely.',
+        messages:[{role:'user',content:msg}]
+      })
+    });
+    var data=await resp.json();
+    var text=(data.content||[]).map(function(c){return c.text||'';}).join('\n');
+    out.lastChild.innerHTML='<b style="color:#c4b5fd;">Assistant:</b> <span style="color:#c8c8e0;">'+(text||'Sorry, no response.').replace(/\n/g,'<br>')+'</span>';
+  }catch(e){
+    out.lastChild.innerHTML='<b style="color:#c4b5fd;">Assistant:</b> <span style="color:#e05555;">Error: could not reach AI service.</span>';
+  }
+  out.scrollTop=out.scrollHeight;
+}
+
+// — URL SHORTENER —
+async function dmShortenUrl(){
+  var url=document.getElementById('urlInput').value.trim();
+  if(!url){ alert('Enter a URL first.'); return; }
+  var box=document.getElementById('url-result');
+  var outEl=document.getElementById('url-out');
+  outEl.value='Shortening...'; box.style.display='block';
+  try{
+    var res=await fetch('https://is.gd/create.php?format=simple&url='+encodeURIComponent(url));
+    var short=await res.text();
+    outEl.value=short.trim();
+  }catch(e){
+    outEl.value='Error: could not shorten URL.';
+  }
+}
+function dmCopyShort(){
+  var el=document.getElementById('url-out'); el.select(); document.execCommand('copy');
+}
+
+// — AGE CALCULATOR —
+function dmAgeMode(mode){
+  document.getElementById('age-en-panel').style.display = mode==='en'?'block':'none';
+  document.getElementById('age-np-panel').style.display = mode==='np'?'block':'none';
+  document.getElementById('ageEngBtn').classList.toggle('dm-btn', mode==='en');
+  document.getElementById('ageNepBtn').classList.toggle('dm-btn', mode==='np');
+}
+function dmCalcAge(){
+  var box=document.getElementById('age-result');
+  var dob;
+  if(document.getElementById('age-np-panel').style.display!=='none'){
+    var y=parseInt(document.getElementById('ageYearNp').value);
+    var m=parseInt(document.getElementById('ageMonthNp').value);
+    var d=parseInt(document.getElementById('ageDayNp').value);
+    if(!y||!m||!d){ alert('Please fill all BS date fields.'); return; }
+    // Approximate BS -> AD conversion: BS year minus ~56-57 years, with month offset (BS new year ~mid-April)
+    var adYear = y - 57;
+    var adDate = new Date(adYear, m-1, d);
+    // rough adjustment: BS calendar starts ~mid-April, shift by adding ~8.5 months
+    adDate.setMonth(adDate.getMonth()+8);
+    dob=adDate;
+    box.innerHTML='<p style="color:#5a5a72;font-size:.7rem;margin-bottom:.5rem;">⚠ Approximate conversion from BS to AD.</p>';
+  } else {
+    var val=document.getElementById('ageDateEn').value;
+    if(!val){ alert('Please select a date of birth.'); return; }
+    dob=new Date(val);
+    box.innerHTML='';
+  }
+  var now=new Date();
+  var years=now.getFullYear()-dob.getFullYear();
+  var months=now.getMonth()-dob.getMonth();
+  var days=now.getDate()-dob.getDate();
+  if(days<0){ months--; var lastMonth=new Date(now.getFullYear(),now.getMonth(),0).getDate(); days+=lastMonth; }
+  if(months<0){ years--; months+=12; }
+  var totalDays=Math.floor((now-dob)/(1000*60*60*24));
+  box.style.display='block';
+  box.innerHTML+='<div class="typ-stats" style="grid-template-columns:repeat(3,1fr);">'+
+    '<div class="typ-stat"><b>'+years+'</b><span>Years</span></div>'+
+    '<div class="typ-stat"><b>'+months+'</b><span>Months</span></div>'+
+    '<div class="typ-stat"><b>'+days+'</b><span>Days</span></div></div>'+
+    '<p style="margin-top:.8rem;color:#7c7c96;font-size:.8rem;">Total days lived: <b style="color:var(--dm-acc2);">'+totalDays.toLocaleString()+'</b></p>';
+}
+
+// — SCIENTIFIC CALCULATOR —
+var sciExpr='';
+function dmSciBuild(){
+  var keys=['7','8','9','/','sqrt','4','5','6','*','^','1','2','3','-','%','0','.','(',')','+','sin','cos','tan','log','ln','C','⌫','π','e','='];
+  var grid=document.getElementById('sci-grid');
+  keys.forEach(function(k){
+    var b=document.createElement('button');
+    b.className='dm-btn outline'; b.style.padding='.7rem 0'; b.textContent=k;
+    b.onclick=function(){ dmSciPress(k); };
+    grid.appendChild(b);
+  });
+}
+function dmSciPress(k){
+  var disp=document.getElementById('sciDisplay');
+  if(k==='C'){ sciExpr=''; }
+  else if(k==='⌫'){ sciExpr=sciExpr.slice(0,-1); }
+  else if(k==='='){
+    try{
+      var expr=sciExpr.replace(/π/g,'Math.PI').replace(/e/g,'Math.E')
+        .replace(/sqrt/g,'Math.sqrt').replace(/sin/g,'Math.sin').replace(/cos/g,'Math.cos')
+        .replace(/tan/g,'Math.tan').replace(/log/g,'Math.log10').replace(/ln/g,'Math.log')
+        .replace(/\^/g,'**').replace(/%/g,'/100');
+      sciExpr=String(Function('"use strict";return ('+expr+')')());
+    }catch(e){ sciExpr='Error'; }
+  } else {
+    sciExpr+=k;
+  }
+  disp.value=sciExpr;
+}
+
+// — PASSWORD GENERATOR —
+function dmGenPwd(){
+  var len=parseInt(document.getElementById('pwdLen').value);
+  var sets='';
+  if(document.getElementById('pwdUpper').checked) sets+='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  if(document.getElementById('pwdLower').checked) sets+='abcdefghijklmnopqrstuvwxyz';
+  if(document.getElementById('pwdNum').checked) sets+='0123456789';
+  if(document.getElementById('pwdSym').checked) sets+='!@#$%^&*()_+-=[]{}|;:,.<>?';
+  if(!sets){ alert('Select at least one character set.'); return; }
+  var pwd='';
+  for(var i=0;i<len;i++){ pwd+=sets[Math.floor(Math.random()*sets.length)]; }
+  document.getElementById('pwd-out').value=pwd;
+  var score=0;
+  if(/[A-Z]/.test(pwd)) score++; if(/[a-z]/.test(pwd)) score++;
+  if(/[0-9]/.test(pwd)) score++; if(/[^A-Za-z0-9]/.test(pwd)) score++;
+  if(len>=12) score++;
+  var labels=['Very Weak','Weak','Fair','Good','Strong','Very Strong'];
+  document.getElementById('pwd-strength').textContent=labels[score]||'Strong';
+}
+function dmCopyPwd(){
+  var el=document.getElementById('pwd-out'); if(!el.value) return; el.select(); document.execCommand('copy');
+}
+
+// — WORD <-> PDF —
+async function dmWordToPdf(){
+  var f=document.getElementById('w2pFile').files[0];
+  var status=document.getElementById('w2p-status');
+  if(!f){ status.textContent='Please select a .docx file.'; return; }
+  status.textContent='Converting...';
+  try{
+    var arrayBuffer=await f.arrayBuffer();
+    var result=await mammoth.convertToHtml({arrayBuffer:arrayBuffer});
+    var container=document.createElement('div');
+    container.style.position='fixed'; container.style.left='-9999px';
+    container.style.width='600px'; container.style.fontFamily='Arial,sans-serif'; container.style.fontSize='12px';
+    container.innerHTML=result.value;
+    document.body.appendChild(container);
+    var doc=new jspdf.jsPDF({unit:'pt',format:'a4'});
+    doc.html(container,{
+      callback:function(d){ d.save(f.name.replace(/\.docx$/i,'')+'.pdf'); document.body.removeChild(container); status.textContent='Done! PDF downloaded.'; },
+      x:20,y:20,width:550,windowWidth:600
+    });
+  }catch(e){ status.textContent='Error converting file: '+e.message; }
+}
+async function dmPdfToWord(){
+  var f=document.getElementById('p2wFile').files[0];
+  var status=document.getElementById('p2w-status');
+  if(!f){ status.textContent='Please select a .pdf file.'; return; }
+  status.textContent='Extracting text...';
+  try{
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    var arrayBuffer=await f.arrayBuffer();
+    var pdf=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
+    var html='<html><head><meta charset="UTF-8"></head><body style="font-family:Calibri,Arial,sans-serif;">';
+    for(var i=1;i<=pdf.numPages;i++){
+      var page=await pdf.getPage(i);
+      var content=await page.getTextContent();
+      var text=content.items.map(function(it){return it.str;}).join(' ');
+      html+='<p>'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</p>';
+    }
+    html+='</body></html>';
+    dmDownloadBlob(html,'application/msword',f.name.replace(/\.pdf$/i,'')+'.doc');
+    status.textContent='Done! Word file downloaded.';
+  }catch(e){ status.textContent='Error extracting text: '+e.message; }
+}
+
+// — PDF MERGER —
+document.addEventListener('change', function(e){
+  if(e.target && e.target.id==='pdfMergeFiles'){
+    var files=Array.from(e.target.files);
+    document.getElementById('pdfmerge-list').innerHTML=files.map(function(f,i){return (i+1)+'. '+f.name;}).join('<br>');
+  }
+});
+async function dmMergePdfs(){
+  var files=document.getElementById('pdfMergeFiles').files;
+  var status=document.getElementById('pdfmerge-status');
+  if(!files || files.length<2){ status.textContent='Please select at least 2 PDF files.'; return; }
+  status.textContent='Merging...';
+  try{
+    var merged=await PDFLib.PDFDocument.create();
+    for(var i=0;i<files.length;i++){
+      var bytes=await files[i].arrayBuffer();
+      var src=await PDFLib.PDFDocument.load(bytes);
+      var pages=await merged.copyPages(src, src.getPageIndices());
+      pages.forEach(function(p){ merged.addPage(p); });
+    }
+    var outBytes=await merged.save();
+    dmDownloadBlob(new Blob([outBytes],{type:'application/pdf'}), 'application/pdf', 'merged.pdf');
+    status.textContent='Done! merged.pdf downloaded.';
+  }catch(e){ status.textContent='Error merging PDFs: '+e.message; }
+}
+
+// — IMAGE COMPRESSOR —
+function dmCompressImg(){
+  var f=document.getElementById('imgCompFile').files[0];
+  var result=document.getElementById('imgcomp-result');
+  if(!f){ alert('Please select an image.'); return; }
+  var quality=parseInt(document.getElementById('imgQual').value)/100;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    var img=new Image();
+    img.onload=function(){
+      var canvas=document.createElement('canvas');
+      canvas.width=img.width; canvas.height=img.height;
+      var ctx=canvas.getContext('2d');
+      ctx.drawImage(img,0,0);
+      canvas.toBlob(function(blob){
+        var origKB=(f.size/1024).toFixed(1);
+        var newKB=(blob.size/1024).toFixed(1);
+        var url=URL.createObjectURL(blob);
+        result.innerHTML='<div class="dm-card"><p style="font-size:.8rem;color:#7c7c96;">Original: '+origKB+' KB &nbsp;→&nbsp; Compressed: <b style="color:var(--dm-acc2);">'+newKB+' KB</b></p>'+
+          '<img src="'+url+'" style="max-width:100%;border-radius:8px;margin:.6rem 0;border:1px solid var(--dm-border);"/>'+
+          '<button class="dm-btn outline" id="imgcomp-dl"><i class="fas fa-download"></i> Download Compressed Image</button></div>';
+        document.getElementById('imgcomp-dl').onclick=function(){
+          var a=document.createElement('a'); a.href=url; a.download='compressed_'+f.name.replace(/\.[^.]+$/,'')+'.jpg'; a.click();
+        };
+      },'image/jpeg',quality);
+    };
+    img.src=ev.target.result;
+  };
+  reader.readAsDataURL(f);
+}
+
 document.addEventListener('DOMContentLoaded', function(){
   termInit();
+  dmSciBuild();
   function tick(){
     var el=document.getElementById('dm-clock');
     if(el) el.textContent=new Date().toLocaleTimeString();
