@@ -66,6 +66,28 @@ a{text-decoration:none;color:inherit;}
 ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
 ::selection{background:rgba(201,168,76,.3);color:var(--gold);}
 
+/* ══ TOUCH / TAP RESPONSIVENESS ══ */
+a,button,input,select,textarea,.btn,.gc,.pj-card,.sw,.nav-btn,.hbg,.sec-dot,.tc{-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+a,button{-webkit-touch-callout:none;}
+
+/* ══ MOMENTUM SCROLL on internal scroll containers ══ */
+.nav-links,#term-out,#ai-out,#api-resp,.dm-sidebar,.dm-content{-webkit-overflow-scrolling:touch;}
+
+/* ══ REDUCE MOTION ══ */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}
+  html{scroll-behavior:auto;}
+  #cur,#cur-ring,.trail,canvas#pc{display:none !important;}
+  .gc{transform:none !important;}
+}
+
+/* ══ LIGHTER BACKDROP BLUR ON SMALL SCREENS (perf) ══ */
+@media(max-width:700px){
+  nav,.nav-links{backdrop-filter:blur(14px) !important;-webkit-backdrop-filter:blur(14px) !important;}
+  #csw,.sec-dot-label,.gh-link{backdrop-filter:blur(10px) !important;}
+}
+body.menu-open{overflow:hidden;}
+
 /* ══ GLITCH HERO NAME ══ */
 .n1,.n2{display:inline;}
 .glitch-wrap{position:relative;display:inline-block;}
@@ -456,6 +478,7 @@ canvas#pc{position:fixed;inset:0;z-index:0;pointer-events:none;}
 .cert-wrap{perspective:700px;height:165px;cursor:none;}
 .cert-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .6s ease;}
 .cert-wrap:hover .cert-inner{transform:rotateY(180deg);}
+.cert-wrap.flipped .cert-inner{transform:rotateY(180deg);}
 .cert-front,.cert-back{position:absolute;inset:0;border-radius:var(--card-r);background:var(--glass);border:1px solid var(--gb);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;padding:1.4rem;text-align:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;}
 .cert-front::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
 .cert-back{transform:rotateY(180deg);background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(201,168,76,.03));border-color:var(--gb2);}
@@ -1269,7 +1292,8 @@ var NET = (function() {
   function resize() {
     W = canvas.width = window.innerWidth;
     H = canvas.height = window.innerHeight;
-    NODE_COUNT = Math.min(Math.floor(W * H / 9000), 140);
+    var cap = W < 480 ? 45 : (W < 900 ? 80 : 140);
+    NODE_COUNT = Math.min(Math.floor(W * H / 9000), cap);
     init();
   }
 
@@ -1407,11 +1431,22 @@ var NET = (function() {
     mouse.x = -9999; mouse.y = -9999;
   });
 
-  window.addEventListener('resize', resize);
-  resize();
-  draw();
+  var resizeT;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeT);
+    resizeT = setTimeout(resize, 150);
+  });
 
-  return { resize: resize, resume: function(){ if(!RAF){ RAF=requestAnimationFrame(draw); } } };
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden) { if (RAF) { cancelAnimationFrame(RAF); RAF = null; } }
+    else if (!window.__devOpen) { RAF = requestAnimationFrame(draw); }
+  });
+
+  var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  resize();
+  if (!prefersReduced) draw(); else canvas.style.display = 'none';
+
+  return { resize: resize, resume: function(){ if(!RAF && !prefersReduced){ RAF=requestAnimationFrame(draw); } } };
 })();
 // ══════════════════════════════════════════
 
@@ -1463,13 +1498,21 @@ function addTilt(id) {
 ['tilt0', 'tilt1', 'tilt2'].forEach(addTilt);
 
 // ── NAV
+// Touch devices: tap to flip certificate cards (CSS :hover is unreliable on touch)
+if (isTouchDevice) {
+  document.querySelectorAll('.cert-wrap').forEach(function(el) {
+    el.addEventListener('click', function() { el.classList.toggle('flipped'); });
+  });
+}
 function toggleMenu() {
-  document.getElementById('nl').classList.toggle('open');
+  var open = document.getElementById('nl').classList.toggle('open');
   document.getElementById('hbg').classList.toggle('open');
+  document.body.classList.toggle('menu-open', open);
 }
 function cm() {
   document.getElementById('nl').classList.remove('open');
   document.getElementById('hbg').classList.remove('open');
+  document.body.classList.remove('menu-open');
 }
 
 // ── THEME
@@ -1501,18 +1544,6 @@ document.addEventListener('click', function(e) {
   if (!document.getElementById('cpick').contains(e.target)) document.getElementById('csw').classList.remove('open');
 });
 
-// ── FORM
-function sendForm() {
-  var n = document.getElementById('cn').value.trim();
-  var e = document.getElementById('ce').value.trim();
-  var m = document.getElementById('cm').value.trim();
-  if (!n || !e || !m) { alert('Please fill all required fields.'); return; }
-  var msg = document.getElementById('fmsg');
-  msg.style.opacity = '1';
-  ['cn', 'ce', 'cs', 'cm'].forEach(function(id) { document.getElementById(id).value = ''; });
-  setTimeout(function() { msg.style.opacity = '0'; }, 4500);
-}
-
 // ── DOWNLOAD CV
 // ── SECTION INDICATOR
 var secSections = ['hero','about','education','skills','projects','github','roadmap','contact'];
@@ -1533,7 +1564,7 @@ function updateActiveSec() {
     a.classList.toggle('nav-active', href === '#' + active);
   });
 }
-window.addEventListener('scroll', updateActiveSec);
+window.addEventListener('scroll', function(){ scrollScheduled = scrollScheduled || requestAnimationFrame(onScrollFrame); }, {passive:true});
 updateActiveSec();
 secDots.forEach(function(dot) {
   dot.addEventListener('click', function() {
@@ -1610,15 +1641,18 @@ function sendForm() {
   setTimeout(function() { msg.style.opacity = '0'; }, 5000);
 }
 
-// ── SCROLL PROGRESS
-window.addEventListener('scroll', function() {
+// ── SCROLL PROGRESS (merged with active-section scroll into one rAF-throttled handler)
+var scrollScheduled = false;
+function onScrollFrame(){
+  scrollScheduled = false;
+  updateActiveSec();
   var p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
   document.getElementById('prog').style.width = p + '%';
   var btt = document.getElementById('btt');
   if (btt) { if (window.scrollY > 400) btt.classList.add('vis'); else btt.classList.remove('vis'); }
   var nav = document.getElementById('mainnav');
   nav.style.boxShadow = window.scrollY > 40 ? '0 4px 30px rgba(0,0,0,0.5)' : 'none';
-});
+}
 
 // ── HOVER CURSOR for new elements
 document.querySelectorAll('.ctr-card,.cert-wrap,.rm-card,.gh-stat,.sec-dot').forEach(function(el) {
